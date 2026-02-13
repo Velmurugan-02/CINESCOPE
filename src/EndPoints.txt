@@ -1,0 +1,59 @@
+Home :
+Trending : /trending/all/day and /trending/all/week
+Popular movies : /movie/popular
+Top rated Movies : /movie/top_rated
+Popular TV : /tv/popular
+Popular person : /person/popular
+
+Search :
+Multi search : /search/multi?query=...
+
+Details :
+Movie: /movie/{id}
+TV: /tv/{id}
+Person: /person/{id}
+Credits: /movie/{id}/credits, /tv/{id}/credits
+Videos: /movie/{id}/videos, /tv/{id}/videos
+Similar: /movie/{id}/similar, /tv/{id}/similar
+
+Data Objects :
+For Movie/TV cards, standardize fields:
+You will render a card using:
+id
+title OR name
+poster_path
+release_date OR first_air_date
+vote_average
+
+Make a rule now:
+If it’s a movie → use title, release_date
+If it’s TV → use name, first_air_date
+
+And for routing:
+movie → /movie/:id
+tv → /tv/:id
+person → /person/:id
+
+image URL rule :
+Your app will convert:
+poster_path: "/abc.jpg"
+into:
+https://image.tmdb.org/t/p/w500/abc.jpg
+
+Decide sizes now:
+Cards: w342 or w500
+Details hero: w780 or original
+
+Also decide fallback behavior:
+If poster_path is null → show “No Poster” placeholder (later).
+
+Pagination :
+TMDB list endpoints give:
+page
+total_pages
+
+Pick one approach:
+Pagination buttons (Previous / Next) — easiest
+Infinite scroll — looks cooler, slightly more work
+
+You don’t need to implement now — just decide.
