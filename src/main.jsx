@@ -1,10 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './apps/App.jsx'
+import { BrowserRouter } from 'react-router-dom'
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from './app/queryClient.js';
+import App from './app/App.jsx'
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>,
 )

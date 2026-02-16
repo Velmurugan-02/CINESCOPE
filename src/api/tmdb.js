@@ -1,44 +1,54 @@
 // src/api/tmdb.js
 const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
-const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 
-//If API variable is missinf 
-if (!BASE_URL) console.warn("Missing VITE_TMDB_BASE_URL in .env");
-if (!TOKEN) console.warn("Missing VITE_TMDB_TOKEN in .env");
-
-export function tmdbUrl(path, params = {}) {
-  const url = new URL(`${BASE_URL}${path}`);
-  Object.entries(params).forEach(([k, v]) => {
-    if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, String(v));
-  });
-  return url.toString();
+function getBearerToken() {
+  const token = import.meta.env.VITE_TMDB_TOKEN;
+  if (!token) throw new Error("VITE_TMDB_TOKEN is not defined in .env");
+  return token;
 }
 
-export async function tmdbFetch(path, params = {}) {
-  const url = tmdbUrl(path, params);
+export async function tmdbRequest(path, params = {}, options = {}) {
+  if (!BASE_URL) throw new Error("VITE_TMDB_BASE_URL is not defined in .env");
 
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${TOKEN}`,
-    },
+  const url = new URL(`${BASE_URL}${path}`);
+
+  Object.entries(params).forEach(([k, v]) => {
+    if (v === undefined || v === null || v === "") return;
+    url.searchParams.set(k, String(v));
   });
 
-  // Helpful error details
+  const res = await fetch(url.toString(), {
+    method: options.method || "GET",
+    headers: {
+      Authorization: `Bearer ${getBearerToken()}`,
+      "Content-Type": "application/json;charset=utf-8",
+      ...(options.headers || {}),
+    },
+    body: options.body,
+  });
+
+  const data = await res.json().catch(() => null);
+
   if (!res.ok) {
-    let errText = "";
-    try {
-      errText = await res.text();
-    } catch {}
-    throw new Error(`TMDB request failed: ${res.status} ${res.statusText}\n${errText}`);
+    const msg =
+      data?.status_message ||
+      data?.message ||
+      `TMDB request failed (${res.status})`;
+    const err = new Error(msg);
+    err.status = res.status;
+    err.payload = data;
+    throw err;
   }
 
-  return res.json();
+  return data;
 }
 
-// Image helper (used later by UI)
-export function tmdbImage(path, size = "w500") {
-  if (!path) return null;
-  return `${import.meta.env.VITE_TMDB_IMAGE_BASE}/${size}${path}`;
-}
+// ===== Ready-to-use API functions =====
+export const searchMulti = (query, page = 1) =>
+  tmdbRequest("/search/multi", { query, page, include_adult: false });
+
+export const getMovieDetails = (id) => tmdbRequest(`/movie/${id}`);
+
+export const getTVDetails = (id) => tmdbRequest(`/tv/${id}`);
+
+export const getPersonDetails = (id) => tmdbRequest(`/person/${id}`);
