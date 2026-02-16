@@ -1,9 +1,8 @@
 // src/api/tmdb.js
-
 const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 
-// Small safety check (helps you debug fast)
+//If API variable is missinf 
 if (!BASE_URL) console.warn("Missing VITE_TMDB_BASE_URL in .env");
 if (!TOKEN) console.warn("Missing VITE_TMDB_TOKEN in .env");
 
