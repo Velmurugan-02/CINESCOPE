@@ -1,0 +1,110 @@
+Phase 1
+Project Setup :
+Create React app (Vite)
+
+TMDB Connection 
+Get TMDB API access
+Store token safely in .env
+Create API client file
+
+Phase 2 — App Skeleton + Routing 
+Create folder structure
+
+Folder Structure :
+src/
+  api/
+    tmdb.js
+  app/
+    App.jsx
+    routes.jsx
+    queryClient.js
+  components/
+    Navbar.jsx
+    Footer.jsx
+    MovieCard.jsx
+    MediaGrid.jsx
+    SectionRow.jsx
+    SkeletonCard.jsx
+    ErrorState.jsx
+  pages/
+    Home.jsx
+    Search.jsx
+    MovieDetails.jsx
+    TVDetails.jsx
+    PersonDetails.jsx
+    Watchlist.jsx
+  utils/
+    image.js
+    format.js
+  main.jsx
+
+Setup React Router
+/ Home
+/search Search
+/movie/:id Movie details
+/tv/:id TV details
+/person/:id Person details
+/watchlist Watchlist
+
+Setup React Query
+Create QueryClient
+Wrap app with QueryClientProvider
+
+Phase 3 - Home Page
+Build UI layout first (static)
+Home sections:
+Trending (day/week toggle)
+Popular Movies
+Top Rated Movies
+Popular TV
+Popular People (optional)
+
+hooks :
+Connect API to each section
+useTrending(timeWindow)
+usePopularMovies()
+useTopRatedMovies()
+usePopularTV()
+
+Hooks calls an endpoint
+returns data, isLoading, isError
+
+Phase 4 - Search Page 
+Create Search UI
+Use /search/multi
+Handle routing based on media_type
+
+Phase 5 - Movie Details Page 
+Fetch Movie Details
+Endpoint: /movie/{id}
+
+Fetch Credits (Cast)
+Endpoint: /movie/{id}/credits
+
+Fetch Trailer
+Endpoint: /movie/{id}/videos
+
+Fetch Similar / Recommendations
+Endpoint: /movie/{id}/similar or /recommendations
+
+Phase 6 - TV Details + Person Details
+TV Details Page
+/tv/{id}
+credits /tv/{id}/credits
+videos /tv/{id}/videos
+similar /tv/{id}/similar
+
+Person Page
+/person/{id}
+show: name, photo, biography, known_for_department
+also fetch: /person/{id}/combined_credits
+
+Phase 7 - Watchlist + Recently Viewed
+Watchlist (LocalStorage)
+Recently Viewed
+
+Phase 8 - Testing + Deployment
+Deploy
+GitHub repo
+Deploy on Vercel or Netlify
+Add env variable in deployment dashboard
