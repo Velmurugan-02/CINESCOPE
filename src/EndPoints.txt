@@ -1,3 +1,5 @@
+Testing the endpoints : https://developer.themoviedb.org/reference/getting-started?utm_source=chatgpt.com
+
 Home :
 Trending : /trending/all/day and /trending/all/week
 Popular movies : /movie/popular
