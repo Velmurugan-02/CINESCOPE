@@ -1,0 +1,69 @@
+.navWrap {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: white;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+}
+
+.navLeft,
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.navCenter {
+  flex: 1;                 /* makes center take remaining space */
+  display: flex;
+  justify-content: center; /* center the search bar */
+}
+
+.logo {
+  width: 75px;
+  height: 72px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.navLink {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.navLink.active {
+  background: rgba(0,0,0,0.07);
+}
+
+/* Search bar */
+.searchBar {
+  display: flex;
+  gap: 8px;
+  width: min(520px, 100%);
+}
+
+.searchBar input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.searchBar button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: white;
+  cursor: pointer;
+}

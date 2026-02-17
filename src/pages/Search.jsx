@@ -57,33 +57,6 @@ export default function Search() {
 
   return (
     <div style={{ padding: 16 }}>
-      <h1>Search</h1>
-
-      <form onSubmit={onSubmit} style={{ display: "flex", gap: 8 }}>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Search movies, TV, people..."
-          style={{
-            padding: "10px 12px",
-            borderRadius: 10,
-            border: "1px solid rgba(0,0,0,0.2)",
-            width: 360,
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "10px 14px",
-            borderRadius: 10,
-            border: "1px solid rgba(0,0,0,0.2)",
-            cursor: "pointer",
-          }}
-        >
-          Search
-        </button>
-      </form>
-
       <div style={{ marginTop: 10, opacity: 0.7 }}>
         {enabled ? (
           <span>
