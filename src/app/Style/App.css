@@ -1,0 +1,60 @@
+/* Global CSS */
+/* Global variable */
+:root {
+  --bg: #0C0F18;
+  --bg-2: #191122;
+
+  --surface: #221336;
+  --surface-2: #2C1547;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --text: #F2F0EB;
+  --text-2: #D5C4B4;
+  --text-muted: #9A9497;
+
+  --primary: #7210D3;
+  --primary-hover: #7713D9;
+  --primary-pressed: #5B10A4;
+
+  --success: #22C05C;
+  --gold: #E4B70D;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg: #F7F7FB;
+  --bg-2: #EFEAF7;
+
+  --surface: #FFFFFF;
+  --surface-2: #F3EEFA;
+  --border: rgba(20, 10, 40, 0.10);
+
+  --text: #140A28;
+  --text-2: #3A2A55;
+  --text-muted: #6C5D86;
+
+  /* Keep brand consistent, just slightly adjusted for light */
+  --primary: #6B14C9;
+  --primary-hover: #5E12B0;
+  --primary-pressed: #4C0F8E;
+
+  --success: #16A34A;
+  --gold: #C79A00;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.btn-primary {
+  background: var(--primary);
+}
+.btn-primary:active {
+  background: var(--primary-pressed);
+}

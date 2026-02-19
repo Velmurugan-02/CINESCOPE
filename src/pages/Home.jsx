@@ -1,8 +1,8 @@
-import TrendingSection from "../components/Home_component/TrendingSection";
-import PopularMoviesSection from "../components/Home_component/PopularMoviesSection";
-import PopularPeopleSection from "../components/Home_component/PopularPeopleSection";
-import PopularTVSection from "../components/Home_component/PopularTVSection";
-import TopRatedMoviesSection from "../components/Home_component/TopRatedMoviesSection";
+import TrendingSection from "../components/HomeComponent/TrendingSection";
+import PopularMoviesSection from "../components/HomeComponent/PopularMoviesSection";
+import PopularPeopleSection from "../components/HomeComponent/PopularPeopleSection";
+import PopularTVSection from "../components/HomeComponent/PopularTVSection";
+import TopRatedMoviesSection from "../components/HomeComponent/TopRatedMoviesSection";
 
 const Home = () =>{
     return(

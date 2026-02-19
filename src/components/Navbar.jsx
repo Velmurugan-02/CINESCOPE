@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import "./StyleNavbar.css";
+import "./Navbar.css";
 
 // Vite-safe image import (recommended)
 import logo from "../assets/CINESCOPE.jpg";
