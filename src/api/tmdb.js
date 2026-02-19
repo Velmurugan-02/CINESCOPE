@@ -52,3 +52,18 @@ export const getMovieDetails = (id) => tmdbRequest(`/movie/${id}`);
 export const getTVDetails = (id) => tmdbRequest(`/tv/${id}`);
 
 export const getPersonDetails = (id) => tmdbRequest(`/person/${id}`);
+
+export const getTrendingMovies = (timeWindow = "week", page = 1) =>
+  tmdbRequest(`/trending/movie/${timeWindow}`, { page });
+
+export const getPopularMovies = (page = 1) =>
+  tmdbRequest("/movie/popular", { page });
+
+export const getTopRatedMovies = (page = 1) =>
+  tmdbRequest("/movie/top_rated", { page });
+
+export const getPopularTV = (page = 1) =>
+  tmdbRequest("/tv/popular", { page });
+
+export const getPopularPeople = (page = 1) =>
+  tmdbRequest("/person/popular", { page });
