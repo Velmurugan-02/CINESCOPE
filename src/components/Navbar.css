@@ -1,19 +1,26 @@
-/* Navbar Container */
+/* Navbar Container — transparent at top, solid when scrolled */
 .navWrap {
-  background: var(--surface);
-  border-bottom: 2px solid var(--border);
-  position: sticky;
+  background: transparent 50%;
+  border-bottom: 2px solid transparent;
+  box-shadow: none;
+  position: fixed;
   top: 0;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  left: 0;
+  right: 0;
+  z-index: 100;
 }
 
-/* Dark mode specific shadow */
-[data-theme="dark"] .navWrap {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+/* Links are always white with shadow for readability over any background */
+.navWrap .navLink {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+  transition: color 0.3s ease;
+}
+
+/* Active link stays purple */
+.navWrap .navLink.active {
+  color: var(--primary) !important;
+  text-shadow: 0 0 10px rgba(114, 16, 211, 0.5);
 }
 
 /* Main Navigation */
@@ -302,15 +309,21 @@
   }
 }
 
-/* Optional: Add a scrolled state for navbar */
+/* Scrolled state — heavy blur, more transparent */
 .navWrap.scrolled {
-  background: var(--surface);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  border-bottom-color: var(--primary);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  border-bottom-color: rgba(114, 16, 211, 0.25);
 }
 
 [data-theme="dark"] .navWrap.scrolled {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  background: rgba(18, 18, 28, 0.50);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  border-bottom-color: rgba(114, 16, 211, 0.35);
 }
 
 /* Optional: Add a subtle separator between nav items */

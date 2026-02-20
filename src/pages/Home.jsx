@@ -3,10 +3,14 @@ import PopularMoviesSection from "../components/HomeComponent/PopularMoviesSecti
 import PopularPeopleSection from "../components/HomeComponent/PopularPeopleSection";
 import PopularTVSection from "../components/HomeComponent/PopularTVSection";
 import TopRatedMoviesSection from "../components/HomeComponent/TopRatedMoviesSection";
+import { IntroComponent } from "../components/HomeComponent/IntroComponent";
 
 const Home = () =>{
     return(
         <>
+            <div>
+                <IntroComponent />
+            </div>
             <div>
                 <TrendingSection />
             </div>  

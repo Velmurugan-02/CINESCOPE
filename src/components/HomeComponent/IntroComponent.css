@@ -1,0 +1,128 @@
+/* IntroComponent.css */
+.intro {
+  position: relative;
+  overflow: hidden;
+  padding: 4.5rem 2rem;
+  min-height: 87vh;
+  display: flex;
+  align-items: center;
+  background: #0b0f17;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Keep content width classy */
+.intro_inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ===== Glass content card ===== */
+
+.intro_content {
+  flex: 1;
+  z-index: 1;
+  padding: 2rem 2.2rem;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.intro_title {
+  font-size: clamp(2rem, 3.5vw, 3.1rem);
+  font-weight: 850;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+
+  background: linear-gradient(90deg, #ffe08a, #ffb86c, #b28cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  text-shadow: 0 0 25px rgba(255, 213, 140, 0.08);
+}
+
+.intro_para {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 1.6rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Features */
+.intro_features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.intro_features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+/* Note */
+.intro_note {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 1.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 968px) {
+  .intro_inner {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .intro_para {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .intro_features li {
+    justify-content: center;
+  }
+
+  .intro_content {
+    padding: 1.8rem 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .intro {
+    padding: 3.2rem 1rem;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

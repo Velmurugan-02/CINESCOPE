@@ -8,7 +8,9 @@ function App() {
   return (
     <>
       <Navbar />
+      <main style={{ paddingTop: "80px" }}>
         <RoutesConfig></RoutesConfig>
+      </main>
       <Footer />
     </>
   )
