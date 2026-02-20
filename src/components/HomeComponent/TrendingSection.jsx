@@ -49,8 +49,8 @@ export default function TrendingSection() {
           <h1 className="trending-title">Trending Movies</h1>
           <span className="trending-badge">{timeWindow === "week" ? "This Week" : "Today"}</span>
         </div>
-        <button 
-          onClick={toggleTimeWindow} 
+        <button
+          onClick={toggleTimeWindow}
           className={`toggle-button ${timeWindow}`}
           aria-label={`Switch to ${timeWindow === "week" ? "daily" : "weekly"} trending`}
         >
@@ -75,7 +75,7 @@ export default function TrendingSection() {
 
         {!isLoading && !isError && (
           <div className="movies-grid">
-            {trending.slice(0, 8).map((movie, index) => (
+            {trending.slice(0, 10).map((movie, index) => (
               <div className="movie-card" key={movie.id}>
                 <div className="movie-poster">
                   {movie.poster_path ? (
@@ -105,9 +105,9 @@ export default function TrendingSection() {
                     </span>
                   </div>
                   <p className="movie-overview">
-                    {movie.overview 
-                      ? (movie.overview.length > 120 
-                        ? `${movie.overview.substring(0, 120)}...` 
+                    {movie.overview
+                      ? (movie.overview.length > 120
+                        ? `${movie.overview.substring(0, 120)}...`
                         : movie.overview)
                       : "No description available."}
                   </p>

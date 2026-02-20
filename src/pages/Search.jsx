@@ -1,4 +1,3 @@
-// src/pages/Search.jsx
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -6,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { searchMulti } from "../api/tmdb";
 import SkeletonCard from "../components/SkeletonCard";
 import ErrorState from "../components/ErrorState";
+import "./Search.css"; // Import the CSS file
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -55,21 +55,49 @@ export default function Search() {
   const results = data?.results || [];
   const totalPages = data?.total_pages || 1;
 
+  const getMediaIcon = (mediaType) => {
+    switch(mediaType) {
+      case 'movie': return '🎬';
+      case 'tv': return '📺';
+      case 'person': return '👤';
+      default: return '📽️';
+    }
+  };
+
   return (
-    <div style={{ padding: 16 }}>
-      <div style={{ marginTop: 10, opacity: 0.7 }}>
+    <div className="search-page">
+      {/* Search Form */}
+      <form onSubmit={onSubmit} className="search-form">
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Search movies, TV shows, people..."
+            className="search-input"
+          />
+          <button type="submit" className="search-submit-btn">
+            Search
+          </button>
+        </div>
+      </form>
+
+      {/* Status Bar */}
+      <div className="search-status">
         {enabled ? (
-          <span>
-            Query: <b>{q}</b> {isFetching ? "(fetching...)" : ""}
+          <span className="status-text">
+            Query: <strong>"{q}"</strong> 
+            {isFetching && <span className="fetching-indicator"> (fetching...)</span>}
           </span>
         ) : (
-          <span>Type something and hit Search.</span>
+          <span className="status-text">Type something and hit Search to discover content.</span>
         )}
       </div>
 
-      <div style={{ marginTop: 16 }}>
+      {/* Results Section */}
+      <div className="search-results">
         {!enabled ? null : isLoading ? (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+          <div className="skeleton-grid">
             {Array.from({ length: 12 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
@@ -79,83 +107,101 @@ export default function Search() {
             title="Search failed"
             message={error?.message}
             onAction={refetch}
-            actionLabel="Retry"
+            actionLabel="Try Again"
           />
         ) : results.length === 0 ? (
-          <p>No results found.</p>
+          <div className="no-results">
+            <p>No results found for "{q}"</p>
+            <p className="no-results-sub">Try different keywords or check your spelling</p>
+          </div>
         ) : (
           <>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <div className="results-grid">
               {results.map((item) => {
-                // item.media_type can be "movie" | "tv" | "person"
                 const mediaType = item.media_type;
                 const id = item.id;
-
-                const title =
-                  item.title || item.name || item.original_name || "Untitled";
-
-                const href =
-                  mediaType === "movie"
-                    ? `/movie/${id}`
-                    : mediaType === "tv"
-                    ? `/tv/${id}`
-                    : mediaType === "person"
-                    ? `/person/${id}`
-                    : null;
+                const title = item.title || item.name || item.original_name || "Untitled";
+                const releaseDate = item.release_date || item.first_air_date;
+                const year = releaseDate ? new Date(releaseDate).getFullYear() : '';
+                const rating = item.vote_average ? (item.vote_average * 10).toFixed(0) : null;
+                
+                const href = mediaType === "movie"
+                  ? `/movie/${id}`
+                  : mediaType === "tv"
+                  ? `/tv/${id}`
+                  : mediaType === "person"
+                  ? `/person/${id}`
+                  : null;
 
                 return (
-                  <div
-                    key={`${mediaType}-${id}`}
-                    style={{
-                      width: 160,
-                      border: "1px solid rgba(0,0,0,0.08)",
-                      borderRadius: 12,
-                      padding: 10,
-                    }}
-                  >
-                    <div style={{ fontSize: 12, opacity: 0.7 }}>
-                      {mediaType?.toUpperCase()}
+                  <div key={`${mediaType}-${id}`} className="result-card">
+                    <div className="card-header">
+                      <span className="media-type-badge">
+                        {getMediaIcon(mediaType)} {mediaType?.toUpperCase()}
+                      </span>
+                      {rating && (
+                        <span className="rating-badge" style={{ 
+                          color: rating >= 70 ? 'var(--success)' : rating >= 50 ? 'var(--gold)' : 'inherit'
+                        }}>
+                          ★ {rating}%
+                        </span>
+                      )}
                     </div>
-                    <div style={{ marginTop: 6, fontWeight: 600 }}>
-                      {title}
+                    
+                    <div className="card-content">
+                      <h3 className="card-title">{title}</h3>
+                      {year && <span className="card-year">{year}</span>}
+                      
+                      {item.character && (
+                        <p className="card-subtitle">as {item.character}</p>
+                      )}
+                      {item.job && (
+                        <p className="card-subtitle">{item.job}</p>
+                      )}
+                      {item.known_for_department && (
+                        <p className="card-subtitle">{item.known_for_department}</p>
+                      )}
                     </div>
 
-                    {href ? (
-                      <div style={{ marginTop: 10 }}>
-                        <Link to={href}>Open</Link>
+                    {href && (
+                      <div className="card-footer">
+                        <Link to={href} className="view-details-link">
+                          View Details →
+                        </Link>
                       </div>
-                    ) : null}
+                    )}
                   </div>
                 );
               })}
             </div>
 
-            <div
-              style={{
-                marginTop: 16,
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <button
-                disabled={page <= 1}
-                onClick={() => goToPage(page - 1)}
-                style={{ padding: "8px 12px", borderRadius: 10 }}
-              >
-                Prev
-              </button>
-              <span>
-                Page <b>{page}</b> / {Math.min(totalPages, 500)}
-              </span>
-              <button
-                disabled={page >= totalPages}
-                onClick={() => goToPage(page + 1)}
-                style={{ padding: "8px 12px", borderRadius: 10 }}
-              >
-                Next
-              </button>
-            </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  className="pagination-btn"
+                  disabled={page <= 1}
+                  onClick={() => goToPage(page - 1)}
+                >
+                  ← Previous
+                </button>
+                
+                <div className="pagination-info">
+                  <span>Page </span>
+                  <strong>{page}</strong>
+                  <span> of </span>
+                  <strong>{Math.min(totalPages, 500)}</strong>
+                </div>
+                
+                <button
+                  className="pagination-btn"
+                  disabled={page >= totalPages}
+                  onClick={() => goToPage(page + 1)}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

@@ -1,69 +1,413 @@
+/* Navbar Container */
 .navWrap {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: white;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Dark mode specific shadow */
+[data-theme="dark"] .navWrap {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Main Navigation */
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 10px 16px;
+  padding: 0.75rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 80px;
 }
 
-.navLeft,
-.navRight {
+/* Left Section */
+.navLeft {
   display: flex;
   align-items: center;
-  gap: 14px;
-}
-
-.navCenter {
-  flex: 1;                 /* makes center take remaining space */
-  display: flex;
-  justify-content: center; /* center the search bar */
+  gap: 2.5rem;
 }
 
 .logo {
-  width: 75px;
-  height: 72px;
-  border-radius: 10px;
-  object-fit: cover;
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  filter: brightness(1);
 }
 
+.logo:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Dark mode logo adjustment */
+[data-theme="dark"] .logo {
+  filter: brightness(0.9) contrast(1.2);
+}
+
+[data-theme="dark"] .logo:hover {
+  filter: brightness(1) contrast(1.2);
+}
+
+/* Center Section */
+.navCenter {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 2rem;
+}
+
+/* Right Section */
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Navigation Links - Base Style */
 .navLink {
+  color: var(--text-2);
   text-decoration: none;
-  color: black;
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+  display: inline-block;
 }
 
+/* Hover effect for all links */
+.navLink:hover {
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+/* Active Link Style */
 .navLink.active {
-  background: rgba(0,0,0,0.07);
+  color: var(--primary);
+  font-weight: 600;
+  transform: translateY(0);
 }
 
-/* Search bar */
+/* Animated Underline for Active Link */
+.navLink.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 0 15px var(--primary);
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Underline hover effect for non-active links */
+.navLink:not(.active)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+  height: 2px;
+  background: var(--primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+.navLink:not(.active):hover::after {
+  left: 0;
+  right: 0;
+  opacity: 0.5;
+}
+
+/* Animation for active link underline */
+@keyframes slideIn {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Glow effect for active link in dark mode */
+[data-theme="dark"] .navLink.active {
+  text-shadow: 0 0 10px rgba(114, 16, 211, 0.5);
+}
+
+[data-theme="dark"] .navLink.active::after {
+  box-shadow: 0 0 20px var(--primary);
+}
+
+/* Hover effect for non-active links in dark mode */
+[data-theme="dark"] .navLink:not(.active):hover {
+  text-shadow: 0 0 8px rgba(114, 16, 211, 0.3);
+}
+
+/* Special styling for Watchlist link (can add a subtle indicator) */
+.navLink[to="/watchlist"] {
+  position: relative;
+}
+
+/* Optional: Add a badge for watchlist count (if you implement later) */
+.watchlist-badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 12px;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(114, 16, 211, 0.3);
+}
+
+/* Large Screens (1200px and above) */
+@media (min-width: 1200px) {
+  .nav {
+    padding: 0.75rem 3rem;
+  }
+
+  .navLink {
+    font-size: 1.05rem;
+  }
+}
+
+/* Tablet Landscape (768px - 1024px) */
+@media (max-width: 1024px) {
+  .nav {
+    padding: 0.75rem 1.5rem;
+    height: 70px;
+  }
+
+  .navRight {
+    gap: 1.25rem;
+  }
+
+  .navLeft {
+    gap: 1.5rem;
+  }
+
+  .navCenter {
+    max-width: 350px;
+    margin: 0 1rem;
+  }
+
+  .logo {
+    height: 40px;
+  }
+}
+
+/* Tablet Portrait (768px and below) */
+@media (max-width: 768px) {
+  .nav {
+    padding: 0.75rem 1rem;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .navCenter {
+    order: 3;
+    max-width: 100%;
+    margin: 0;
+    flex-basis: 100%;
+  }
+
+  .navRight {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .navLink {
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+  }
+
+  .navLink.active::after {
+    height: 2px;
+  }
+
+  .logo {
+    height: 35px;
+  }
+
+  .navLeft {
+    gap: 1rem;
+  }
+}
+
+/* Mobile Landscape (480px and below) */
+@media (max-width: 480px) {
+  .navWrap {
+    border-bottom-width: 1px;
+  }
+
+  .nav {
+    padding: 0.5rem 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .navRight {
+    gap: 0.75rem;
+  }
+
+  .navLink {
+    font-size: 0.8rem;
+    padding: 0.3rem 0;
+    letter-spacing: 0.2px;
+  }
+
+  .logo {
+    height: 30px;
+  }
+
+  .navLeft {
+    gap: 0.75rem;
+  }
+
+  /* Hide text on smallest screens? Optional */
+  .navLink span {
+    display: none;
+    /* If you want to use icons instead */
+  }
+}
+
+/* Mobile Small (360px and below) */
+@media (max-width: 360px) {
+  .navRight {
+    gap: 0.5rem;
+  }
+
+  .navLink {
+    font-size: 0.75rem;
+  }
+}
+
+/* Optional: Add a scrolled state for navbar */
+.navWrap.scrolled {
+  background: var(--surface);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-bottom-color: var(--primary);
+}
+
+[data-theme="dark"] .navWrap.scrolled {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Optional: Add a subtle separator between nav items */
+.navRight .navLink:not(:last-child)::before {
+  display: none;
+  /* Remove if you don't want separators */
+}
+
+/* Optional: If you want separators between nav items */
+.navRight .navLink:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  opacity: 0.5;
+}
+
+/* Remove separator on mobile */
+@media (max-width: 768px) {
+  .navRight .navLink:not(:last-child)::after {
+    display: none;
+  }
+}
+
+/* Focus states for accessibility */
+.navLink:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Loading state for nav items (if needed) */
+.navLink.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Search Bar Container */
 .searchBar {
   display: flex;
-  gap: 8px;
-  width: min(520px, 100%);
+  align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.searchBar input {
-  flex: 1;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.2);
+.searchBar:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(114, 16, 211, 0.2);
+  background: var(--surface);
 }
 
-.searchBar button {
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.2);
-  background: white;
-  cursor: pointer;
+/* Search Icon */
+.searchIcon {
+  color: var(--text-muted);
+  min-width: 18px;
+  margin-right: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.searchBar:focus-within .searchIcon {
+  color: var(--primary);
+}
+
+/* Search Input */
+.searchInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 400;
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .searchBar {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .searchBar:focus-within {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary);
 }

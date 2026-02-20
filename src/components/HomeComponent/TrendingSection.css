@@ -1,121 +1,140 @@
-/* TrendingSection.css - Compact Version */
+/* TrendingSection.css - Primary Theme */
 
 .trending-section {
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: inherit;
 }
 
-/* Header Styles - Slightly Smaller */
+/* Header Styles */
 .trending-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--border);
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .trending-title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1a202c;
+  color: var(--text);
   margin: 0;
   letter-spacing: -0.02em;
 }
 
 .trending-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary);
   color: white;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(114, 16, 211, 0.3);
 }
 
-/* Toggle Button - Smaller */
+/* Toggle Button */
 .toggle-button {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 1.2rem;
-  border: none;
-  border-radius: 9999px;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 50px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.toggle-button.week {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.toggle-button.day {
-  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-  color: #1a202c;
+  background: transparent;
+  color: var(--text-muted);
 }
 
 .toggle-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--primary);
+  border-color: var(--primary);
 }
+
+.toggle-button.week {
+  background: var(--surface);
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(114, 16, 211, 0.2);
+}
+
+/* For simplicity, we just toggle styles based on active state logic in JSX if we had it, 
+   but here we use the classes 'week' and 'day' from the component */
+.toggle-button.day {
+  background: var(--surface);
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(114, 16, 211, 0.2);
+}
+
+/* Inactive state override if needed (component toggles class 'week' or 'day')
+   Actually the component adds class 'week' or 'day' depending on state. 
+   We want the ACTIVE one to look selected. 
+   Currently the component puts the CURRENT mode as the class name. 
+*/
 
 .toggle-icon {
   font-size: 1rem;
 }
 
-/* Movies Grid - Tighter Grid */
+/* Movies Grid */
 .movies-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
 }
 
-/* Movie Card - Smaller */
+/* Movie Card */
 .movie-card {
-  background: white;
-  border-radius: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 220px;
-  margin: 0 auto;
-  width: 100%;
+  position: relative;
 }
 
 .movie-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  border-color: var(--primary);
 }
 
-/* Movie Poster - Smaller */
+.movie-card:hover .movie-title {
+  color: var(--primary);
+}
+
+/* Movie Poster */
 .movie-poster {
   position: relative;
   aspect-ratio: 2/3;
   overflow: hidden;
-  background: #f7fafc;
+  background: var(--bg);
 }
 
 .poster-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .movie-card:hover .poster-image {
@@ -128,160 +147,190 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-size: 0.75rem;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.8rem;
   text-align: center;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
-/* Rating Badge - Smaller */
+/* Badges */
 .movie-rating {
   position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  background: rgba(0, 0, 0, 0.8);
-  color: #ffd700;
-  padding: 0.15rem 0.4rem;
-  border-radius: 0.2rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  z-index: 1;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  color: #fbbf24;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Top Ranked Badge - Smaller */
 .top-ranked {
   position: absolute;
-  top: 0.3rem;
-  left: 0.3rem;
-  background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
-  color: #1a202c;
-  padding: 0.15rem 0.5rem;
-  border-radius: 0.2rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  z-index: 1;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Movie Info - More Compact */
+/* Movie Info */
 .movie-info {
-  padding: 0.75rem;
+  padding: 1rem;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.5rem;
 }
 
 .movie-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1a202c;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.2rem;
+  transition: color 0.3s ease;
 }
 
 .movie-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.1rem 0;
+  margin-top: auto;
+  /* Pushes meta to bottom if overview is short/hidden */
 }
 
 .release-date {
-  font-size: 0.7rem;
-  color: #718096;
+  font-size: 0.8rem;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
 .adult-badge {
-  font-size: 0.6rem;
-  padding: 0.15rem 0.35rem;
-  border-radius: 0.2rem;
-  font-weight: 600;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .adult-badge.adult {
-  background-color: #fc8181;
-  color: #742a2a;
+  background-color: rgba(220, 38, 38, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(220, 38, 38, 0.3);
 }
 
 .adult-badge.everyone {
-  background-color: #9ae6b4;
-  color: #22543d;
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .movie-overview {
-  font-size: 0.7rem;
-  color: #4a5568;
-  line-height: 1.3;
-  margin: 0.1rem 0 0 0;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin: 0.25rem 0 0.75rem 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 1.8rem;
 }
 
-/* Remove details button for cleaner look */
+/* Unhide details button for style (optional, if user wants it back) */
 .details-button {
   display: none;
+  /* Keep hidden as per previous design choice, or enable if desired */
+  margin-top: auto;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
-/* Loading State - Smaller */
-.loading-container {
+.details-button:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Loading & Error */
+.loading-container,
+.error-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
-  gap: 0.75rem;
+  min-height: 300px;
+  gap: 1rem;
+  color: var(--text-muted);
 }
 
 .loading-spinner {
-  width: 35px;
-  height: 35px;
-  border: 3px solid #e2e8f0;
-  border-top: 3px solid #667eea;
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top: 3px solid var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Error State */
-.error-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
 .error-message {
-  background-color: #fff5f5;
-  color: #c53030;
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #ef4444;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #fc8181;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-/* Responsive Design - Adjusted for smaller cards */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.movie-card {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* Responsive */
 @media (max-width: 1200px) {
   .movies-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-  }
-  
-  .movie-card {
-    max-width: 200px;
+    gap: 1rem;
   }
 }
 
@@ -295,64 +344,24 @@
   .movies-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .trending-title {
     font-size: 1.5rem;
-  }
-  
-  .movie-card {
-    max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .trending-section {
-    padding: 1rem 0.75rem;
-  }
-  
   .trending-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .movies-grid {
     gap: 0.75rem;
   }
-  
-  .movies-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-  }
-  
-  .movie-info {
-    padding: 0.5rem;
-  }
-  
-  .movie-title {
-    font-size: 0.8rem;
-    min-height: 1.9rem;
-  }
-}
 
-@media (max-width: 360px) {
-  .movies-grid {
-    grid-template-columns: 1fr;
+  .trending-badge {
+    display: none;
+    /* Hide badge on very small screens to save space */
   }
-  
-  .movie-card {
-    max-width: 280px;
-  }
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.movie-card {
-  animation: fadeIn 0.3s ease forwards;
 }

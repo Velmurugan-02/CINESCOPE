@@ -53,7 +53,7 @@ export default function PopularMoviesSection() {
     fetchMixedTamilAndEnglish();
   }, []);
 
-  const visible = movies.slice(0, 8);
+  const visible = movies.slice(0, 10);
 
   return (
     <section className="home-section">

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import ThemeToggle from "./ThemeToggle";
 import "./Navbar.css";
 
 // Vite-safe image import (recommended)
@@ -12,7 +13,12 @@ export default function Navbar() {
         {/* LEFT */}
         <div className="navLeft">
           <img className="logo" src={logo} alt="Cinescope" />
-          <NavLink className="navLink" to="/">
+          <NavLink 
+            className={({ isActive }) => 
+              isActive ? "navLink active" : "navLink"
+            } 
+            to="/"
+          >
             Home
           </NavLink>
         </div>
@@ -24,10 +30,39 @@ export default function Navbar() {
 
         {/* RIGHT */}
         <div className="navRight">
-          <NavLink className="navLink" to="/movies">Movies</NavLink>
-          <NavLink className="navLink" to="/people">People</NavLink>
-          <NavLink className="navLink" to="/tv">TV Shows</NavLink>
-          <NavLink className="navLink" to="/watchlist">Watchlist</NavLink>
+          <NavLink 
+            className={({ isActive }) => 
+              isActive ? "navLink active" : "navLink"
+            } 
+            to="/movies"
+          >
+            Movies
+          </NavLink>
+          <NavLink 
+            className={({ isActive }) => 
+              isActive ? "navLink active" : "navLink"
+            } 
+            to="/people"
+          >
+            People
+          </NavLink>
+          <NavLink 
+            className={({ isActive }) => 
+              isActive ? "navLink active" : "navLink"
+            } 
+            to="/tv"
+          >
+            TV Shows
+          </NavLink>
+          <NavLink 
+            className={({ isActive }) => 
+              isActive ? "navLink active" : "navLink"
+            } 
+            to="/watchlist"
+          >
+            Watchlist
+          </NavLink>
+          <ThemeToggle />
         </div>
       </nav>
     </header>

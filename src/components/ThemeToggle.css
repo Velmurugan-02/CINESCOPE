@@ -1,0 +1,85 @@
+.theme-toggle {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  margin-left: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+  z-index: 0;
+  opacity: 0.1;
+}
+
+.theme-toggle:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+.theme-toggle:hover {
+  border-color: var(--primary);
+  transform: rotate(15deg);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-icon {
+  color: var(--primary);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.theme-toggle:hover .theme-icon {
+  color: var(--text);
+  transform: scale(1.1);
+}
+
+/* Optional: Add a subtle glow effect in dark mode */
+[data-theme="dark"] .theme-toggle:hover {
+  box-shadow: 0 0 15px rgba(114, 16, 211, 0.5);
+}
+
+/* Optional: Add a pulse animation when theme changes */
+.theme-toggle:active .theme-icon {
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Focus state for accessibility */
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

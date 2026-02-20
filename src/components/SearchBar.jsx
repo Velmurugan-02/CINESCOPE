@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Search } from "lucide-react";
 
 export default function SearchBar() {
   const [q, setQ] = useState("");
@@ -14,12 +15,13 @@ export default function SearchBar() {
 
   return (
     <form onSubmit={onSubmit} className="searchBar">
+      <Search className="searchIcon" size={18} />
       <input
+        className="searchInput"
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Search movies, TV, people…"
       />
-      <button type="submit">Search</button>
     </form>
   );
 }
