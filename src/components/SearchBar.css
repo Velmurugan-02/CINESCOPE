@@ -1,0 +1,158 @@
+/* =============================================
+   SearchBar.css — CineScope Premium Search
+   ============================================= */
+
+/* ── Shell ──────────────────────────────────── */
+.searchBar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.52rem 0.9rem;
+    border-radius: 50px;
+
+    /* Base glass look */
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    /* Glow shadow */
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+
+    cursor: text;
+}
+
+/* Focused state */
+.searchBar.focused {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(178, 140, 255, 0.6);
+    box-shadow:
+        0 0 0 3px rgba(178, 140, 255, 0.18),
+        0 4px 20px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Hover (unfocused) */
+.searchBar:not(.focused):hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow:
+        0 2px 14px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* ── Search icon ─────────────────────────────── */
+.searchIcon {
+    color: rgba(255, 255, 255, 0.38);
+    flex-shrink: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.searchBar.focused .searchIcon {
+    color: #b28cff;
+    transform: scale(1.1);
+}
+
+/* ── Input  ─────────────────────────────────── */
+.searchInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    font-weight: 400;
+    font-family: inherit;
+    letter-spacing: 0.01em;
+    min-width: 0;
+}
+
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.32);
+    font-weight: 300;
+    transition: color 0.2s ease;
+}
+
+.searchBar.focused .searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Clear button ────────────────────────────── */
+.searchClear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+    padding: 0.2rem;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    animation: popIn 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.searchClear:hover {
+    background: rgba(255, 80, 80, 0.2);
+    border-color: rgba(255, 80, 80, 0.3);
+    color: #ff6b6b;
+    transform: scale(1.1);
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ── Keyboard shortcut hint ──────────────────── */
+.searchKbd {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.42rem;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.28);
+    font-size: 0.68rem;
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    flex-shrink: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+
+
+/* ── Reduced motion ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .searchClear {
+        animation: none;
+    }
+
+    .searchBar,
+    .searchIcon,
+    .searchInput::placeholder {
+        transition: none;
+    }
+}

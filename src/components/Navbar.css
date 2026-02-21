@@ -1,426 +1,515 @@
-/* Navbar Container — transparent at top, solid when scrolled */
+/* ==============================================
+   Navbar.css — CineScope Premium Header
+   ============================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ── CSS Variables (header-scoped) ──────────── */
+:root {
+  --nav-height: 72px;
+  --nav-amber: #ffb86c;
+  --nav-purple: #b28cff;
+  --nav-glow: rgba(178, 140, 255, 0.45);
+}
+
+/* ── Shell ──────────────────────────────────── */
 .navWrap {
-  background: transparent 50%;
-  border-bottom: 2px solid transparent;
-  box-shadow: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
+  inset: 0 0 auto 0;
+  z-index: 200;
+  height: var(--nav-height);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  font-family: 'Inter', sans-serif;
 }
 
-/* Links are always white with shadow for readability over any background */
-.navWrap .navLink {
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
-  transition: color 0.3s ease;
+/* scrolled — glass effect */
+.navWrap.scrolled {
+  background: rgba(11, 15, 23, 0.72);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.45);
 }
 
-/* Active link stays purple */
-.navWrap .navLink.active {
-  color: var(--primary) !important;
-  text-shadow: 0 0 10px rgba(114, 16, 211, 0.5);
-}
-
-/* Main Navigation */
+/* ── Inner nav row ──────────────────────────── */
 .nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 2rem;
+  height: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  height: 80px;
-}
-
-/* Left Section */
-.navLeft {
+  padding: 0 2rem;
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
-.logo {
-  height: 45px;
-  width: auto;
-  object-fit: contain;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  filter: brightness(1);
-}
-
-.logo:hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-}
-
-/* Dark mode logo adjustment */
-[data-theme="dark"] .logo {
-  filter: brightness(0.9) contrast(1.2);
-}
-
-[data-theme="dark"] .logo:hover {
-  filter: brightness(1) contrast(1.2);
-}
-
-/* Center Section */
-.navCenter {
-  flex: 1;
-  max-width: 500px;
-  margin: 0 2rem;
-}
-
-/* Right Section */
-.navRight {
+/* ── Logo ───────────────────────────────────── */
+.navLogo {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-}
-
-/* Navigation Links - Base Style */
-.navLink {
-  color: var(--text-2);
+  gap: 0.5rem;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
-  padding: 0.5rem 0;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.navLogo:hover {
+  transform: scale(1.04);
+}
+
+.navLogo_icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 10px rgba(255, 184, 108, 0.6));
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 184, 108, 0.5));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 184, 108, 0.9));
+  }
+}
+
+.navLogo_text {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.navLogo_accent {
+  background: linear-gradient(100deg, var(--nav-amber), var(--nav-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Desktop link list ──────────────────────── */
+.navLinks {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+/* Individual link */
+.navLink {
   position: relative;
-  transition: all 0.3s ease;
-  letter-spacing: 0.3px;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease, background 0.2s ease;
+  overflow: hidden;
 }
 
-/* Hover effect for all links */
+.navLink_icon {
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+/* Hover */
 .navLink:hover {
-  color: var(--primary);
-  transform: translateY(-1px);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
 }
 
-/* Active Link Style */
+.navLink:hover .navLink_icon {
+  opacity: 1;
+}
+
+/* Active */
 .navLink.active {
-  color: var(--primary);
+  color: #fff;
+  background: rgba(178, 140, 255, 0.14);
   font-weight: 600;
-  transform: translateY(0);
 }
 
-/* Animated Underline for Active Link */
-.navLink.active::after {
+.navLink.active .navLink_icon {
+  opacity: 1;
+}
+
+/* Glow ripple on active */
+.navLink_glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.navLink.active .navLink_glow {
+  box-shadow: inset 0 0 0 1px rgba(178, 140, 255, 0.3);
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 1px rgba(178, 140, 255, 0.25);
+  }
+
+  50% {
+    box-shadow: inset 0 0 0 1px rgba(178, 140, 255, 0.55);
+  }
+}
+
+/* Active bottom bar */
+.navLink.active::before {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-hover) 100%);
-  border-radius: 3px 3px 0 0;
-  box-shadow: 0 0 15px var(--primary);
-  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Underline hover effect for non-active links */
-.navLink:not(.active)::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  right: 50%;
+  left: 12px;
+  right: 12px;
   height: 2px;
-  background: var(--primary);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
+  background: linear-gradient(90deg, var(--nav-amber), var(--nav-purple));
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 0 10px rgba(178, 140, 255, 0.6);
+  animation: barSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.navLink:not(.active):hover::after {
-  left: 0;
-  right: 0;
-  opacity: 0.5;
-}
-
-/* Animation for active link underline */
-@keyframes slideIn {
+@keyframes barSlide {
   from {
     transform: scaleX(0);
-    opacity: 0;
   }
 
   to {
     transform: scaleX(1);
+  }
+}
+
+/* ── Search ─────────────────────────────────── */
+.navSearch {
+  flex: 1;
+  max-width: 440px;
+  margin-left: auto;
+}
+
+/* SearchBar styles now live in SearchBar.css */
+
+/* ── Right controls ─────────────────────────── */
+.navControls {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Hamburger button */
+.navHamburger {
+  display: none;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  padding: 0.45rem;
+  line-height: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navHamburger:hover {
+  background: rgba(178, 140, 255, 0.18);
+  color: #fff;
+}
+
+/* ── ThemeToggle — scoped to navbar for higher specificity ── */
+/* Using .navControls parent beats ThemeToggle.css regardless of load order */
+.navControls .theme-toggle {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 10px !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  cursor: pointer;
+  padding: 0.48rem !important;
+  line-height: 0;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.navControls .theme-toggle:hover {
+  background: rgba(255, 184, 108, 0.15) !important;
+  border-color: rgba(255, 184, 108, 0.3) !important;
+  color: #ffb86c !important;
+  transform: none;
+}
+
+.navControls .theme-toggle .theme-icon {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.navControls .theme-toggle:hover .theme-icon {
+  color: #ffb86c !important;
+}
+
+/* ── Mobile Drawer ──────────────────────────── */
+.navDrawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(320px, 85vw);
+  background: rgba(11, 15, 23, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 300;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.navDrawer.open {
+  transform: translateX(0);
+}
+
+.navDrawer_inner {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--nav-height) + 1.5rem) 1.5rem 2rem;
+  height: 100%;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+.navDrawer_search .searchBar {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50px;
+}
+
+.navDrawer_search .searchBar:focus-within {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(178, 140, 255, 0.5);
+}
+
+.navDrawer_search .searchIcon {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.navDrawer_search .searchInput {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navDrawer_search .searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.navDrawer_links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.navDrawer_link {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+
+.navDrawer_link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.navDrawer_link.active {
+  color: #fff;
+  background: rgba(178, 140, 255, 0.15);
+  border: 1px solid rgba(178, 140, 255, 0.25);
+  font-weight: 600;
+}
+
+.navDrawer_footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.navDrawer_brand {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.navDrawer_tagline {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.04em;
+}
+
+/* ── Overlay ────────────────────────────────── */
+.navOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 250;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
     opacity: 1;
   }
 }
 
-/* Glow effect for active link in dark mode */
-[data-theme="dark"] .navLink.active {
-  text-shadow: 0 0 10px rgba(114, 16, 211, 0.5);
-}
-
-[data-theme="dark"] .navLink.active::after {
-  box-shadow: 0 0 20px var(--primary);
-}
-
-/* Hover effect for non-active links in dark mode */
-[data-theme="dark"] .navLink:not(.active):hover {
-  text-shadow: 0 0 8px rgba(114, 16, 211, 0.3);
-}
-
-/* Special styling for Watchlist link (can add a subtle indicator) */
-.navLink[to="/watchlist"] {
-  position: relative;
-}
-
-/* Optional: Add a badge for watchlist count (if you implement later) */
-.watchlist-badge {
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  background: var(--primary);
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 12px;
-  min-width: 18px;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(114, 16, 211, 0.3);
-}
-
-/* Large Screens (1200px and above) */
-@media (min-width: 1200px) {
-  .nav {
-    padding: 0.75rem 3rem;
-  }
-
-  .navLink {
-    font-size: 1.05rem;
-  }
-}
-
-/* Tablet Landscape (768px - 1024px) */
+/* ── Responsive ─────────────────────────────── */
 @media (max-width: 1024px) {
   .nav {
-    padding: 0.75rem 1.5rem;
-    height: 70px;
-  }
-
-  .navRight {
+    padding: 0 1.5rem;
     gap: 1.25rem;
   }
 
-  .navLeft {
-    gap: 1.5rem;
-  }
-
-  .navCenter {
-    max-width: 350px;
-    margin: 0 1rem;
-  }
-
-  .logo {
-    height: 40px;
+  .navSearch {
+    max-width: 320px;
   }
 }
 
-/* Tablet Portrait (768px and below) */
 @media (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+
+  .navHamburger {
+    display: flex;
+  }
+
+  .navSearch {
+    display: none;
+  }
+
   .nav {
-    padding: 0.75rem 1rem;
-    height: auto;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .navCenter {
-    order: 3;
-    max-width: 100%;
-    margin: 0;
-    flex-basis: 100%;
-  }
-
-  .navRight {
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .navLink {
-    font-size: 0.9rem;
-    padding: 0.4rem 0;
-  }
-
-  .navLink.active::after {
-    height: 2px;
-  }
-
-  .logo {
-    height: 35px;
-  }
-
-  .navLeft {
     gap: 1rem;
   }
 }
 
-/* Mobile Landscape (480px and below) */
 @media (max-width: 480px) {
-  .navWrap {
-    border-bottom-width: 1px;
-  }
-
   .nav {
-    padding: 0.5rem 0.75rem;
-    gap: 0.75rem;
+    padding: 0 1rem;
   }
 
-  .navRight {
-    gap: 0.75rem;
-  }
-
-  .navLink {
-    font-size: 0.8rem;
-    padding: 0.3rem 0;
-    letter-spacing: 0.2px;
-  }
-
-  .logo {
-    height: 30px;
-  }
-
-  .navLeft {
-    gap: 0.75rem;
-  }
-
-  /* Hide text on smallest screens? Optional */
-  .navLink span {
-    display: none;
-    /* If you want to use icons instead */
+  .navLogo_text {
+    font-size: 1.1rem;
   }
 }
 
-/* Mobile Small (360px and below) */
-@media (max-width: 360px) {
-  .navRight {
-    gap: 0.5rem;
-  }
-
-  .navLink {
-    font-size: 0.75rem;
-  }
-}
-
-/* Scrolled state — heavy blur, more transparent */
-.navWrap.scrolled {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
-  border-bottom-color: rgba(114, 16, 211, 0.25);
-}
-
-[data-theme="dark"] .navWrap.scrolled {
-  background: rgba(18, 18, 28, 0.50);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-  border-bottom-color: rgba(114, 16, 211, 0.35);
-}
-
-/* Optional: Add a subtle separator between nav items */
-.navRight .navLink:not(:last-child)::before {
-  display: none;
-  /* Remove if you don't want separators */
-}
-
-/* Optional: If you want separators between nav items */
-.navRight .navLink:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: -0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1px;
-  height: 20px;
-  background: var(--border);
-  opacity: 0.5;
-}
-
-/* Remove separator on mobile */
-@media (max-width: 768px) {
-  .navRight .navLink:not(:last-child)::after {
-    display: none;
-  }
-}
-
-/* Focus states for accessibility */
-.navLink:focus-visible {
-  outline: 2px solid var(--primary);
+/* ── Accessibility ──────────────────────────── */
+.navLink:focus-visible,
+.navHamburger:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--nav-purple);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
-/* Loading state for nav items (if needed) */
-.navLink.loading {
-  opacity: 0.7;
-  pointer-events: none;
+/* ── Reduced motion ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  .navLogo_icon,
+  .navLink.active .navLink_glow,
+  .navLink.active::before {
+    animation: none !important;
+  }
+
+  .navDrawer {
+    transition: none;
+  }
 }
 
-/* Search Bar Container */
-.searchBar {
-  display: flex;
-  align-items: center;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  padding: 0.5rem 1rem;
-  width: 100%;
-  transition: all 0.3s ease;
-  position: relative;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+/* ════════════════════════════════════════════════
+   LIGHT MODE LOCK — header never reacts to theme
+   ════════════════════════════════════════════════ */
+[data-theme="light"] .navWrap {
+  background: rgba(11, 15, 23, 0.96) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(22px) !important;
+  -webkit-backdrop-filter: blur(22px) !important;
 }
 
-.searchBar:focus-within {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(114, 16, 211, 0.2);
-  background: var(--surface);
+[data-theme="light"] .navWrap.scrolled {
+  background: rgba(11, 15, 23, 0.96) !important;
+  backdrop-filter: blur(22px) !important;
+  -webkit-backdrop-filter: blur(22px) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.45) !important;
 }
 
-/* Search Icon */
-.searchIcon {
-  color: var(--text-muted);
-  min-width: 18px;
-  margin-right: 0.75rem;
-  transition: color 0.3s ease;
+[data-theme="light"] .navLogo_text {
+  color: #ffffff !important;
 }
 
-.searchBar:focus-within .searchIcon {
-  color: var(--primary);
+[data-theme="light"] .navLink {
+  color: rgba(255, 255, 255, 0.65) !important;
 }
 
-/* Search Input */
-.searchInput {
-  background: transparent;
-  border: none;
-  outline: none;
-  width: 100%;
-  color: var(--text);
-  font-size: 0.95rem;
-  font-family: inherit;
-  font-weight: 400;
+[data-theme="light"] .navLink:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.07) !important;
 }
 
-.searchInput::placeholder {
-  color: var(--text-muted);
-  font-weight: 300;
+[data-theme="light"] .navLink.active {
+  color: #fff !important;
+  background: rgba(178, 140, 255, 0.14) !important;
 }
 
-/* Dark mode adjustments */
-[data-theme="dark"] .searchBar {
-  background: rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.1);
+[data-theme="light"] .navHamburger {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
-[data-theme="dark"] .searchBar:focus-within {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--primary);
+[data-theme="light"] .navDrawer {
+  background: rgba(11, 15, 23, 0.97) !important;
+  border-left-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="light"] .navDrawer_link {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+[data-theme="light"] .navDrawer_link.active {
+  color: #fff !important;
+  background: rgba(178, 140, 255, 0.15) !important;
+}
+
+[data-theme="light"] .navDrawer_brand,
+[data-theme="light"] .navDrawer_tagline {
+  color: rgba(255, 255, 255, 0.6) !important;
 }

@@ -1,8 +1,14 @@
+import NowPlaying from "../components/MoviesComponent/NowPlaying";
+import PopularMoviesSection from "../components/MoviesComponent/PopularMoviesSection";"../components/MoviesComponent/PopularMoviesSection.jsx"
 const Movies = () =>{
   return (
-    <div style={{ padding: 16 }}>
-      <h1>Movies</h1>
-      <p>Movies listing page (popular/trending) will come here.</p>
+    <div>
+      <div>
+        <PopularMoviesSection />
+      </div>
+      <div>
+        <NowPlaying />
+      </div>
     </div>
   );
 }

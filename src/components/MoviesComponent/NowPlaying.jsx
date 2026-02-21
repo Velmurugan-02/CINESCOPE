@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
-import "./PopularMoviesSection.css";
+import "./NowPlaying.css";
 
-export default function PopularMoviesSection() {
+export default function NowPlaying() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -17,14 +17,14 @@ export default function PopularMoviesSection() {
         setIsError(false);
 
         const [ta, en] = await Promise.all([
-          tmdbRequest("/discover/movie", {
+          tmdbRequest("/movie/now_playing", {
             with_original_language: "ta",
             sort_by: "popularity.desc",
             include_adult: false,
             page: 1,
             region: "IN",
           }),
-          tmdbRequest("/discover/movie", {
+          tmdbRequest("/movie/now_playing", {
             with_original_language: "en",
             sort_by: "popularity.desc",
             include_adult: false,
@@ -34,7 +34,6 @@ export default function PopularMoviesSection() {
         ]);
 
         const combined = [...(ta.results || []), ...(en.results || [])];
-
         // dedupe by movie.id
         const unique = Array.from(new Map(combined.map((m) => [m.id, m])).values());
 
@@ -58,7 +57,7 @@ export default function PopularMoviesSection() {
   return (
     <section className="home-section">
       <div className="section-header">
-        <h2 className="section-title">Popular Movies (Tamil + English)</h2>
+        <h2 className="section-title">On Theaters</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>
 
