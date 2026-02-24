@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
-import "./TrendingSection.css";
+import { useNavigate } from "react-router-dom";
+import "./TrendingTVshows.css";
 
-export default function TrendingSection() {
+export default function TrendingTVshows() {
   const [trending, setTrending] = useState([]);
   const [timeWindow, setTimeWindow] = useState("week");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const navigate = useNavigate();
 
   const toggleTimeWindow = () => {
     setTimeWindow((prev) => (prev === "week" ? "day" : "week"));
@@ -17,11 +19,11 @@ export default function TrendingSection() {
       try {
         setIsLoading(true);
         setIsError(false);
-        const data = await tmdbRequest(`/trending/movie/${timeWindow}`);
+        const data = await tmdbRequest(`/trending/tv/${timeWindow}`);
         setTrending(data.results || []);
       } catch (err) {
         setIsError(true);
-        console.error("Error fetching trending movies:", err);
+        console.error("Error fetching trending TV shows:", err);
       } finally {
         setIsLoading(false);
       }
@@ -46,7 +48,7 @@ export default function TrendingSection() {
     <section className="trending-section">
       <div className="trending-header">
         <div className="header-left">
-          <h1 className="trending-title">Trending Movies</h1>
+          <h1 className="trending-title">Trending TV Shows</h1>
           <span className="trending-badge">{timeWindow === "week" ? "This Week" : "Today"}</span>
         </div>
         <button
@@ -63,7 +65,7 @@ export default function TrendingSection() {
         {isLoading && (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>Loading trending movies...</p>
+            <p>Loading trending TV shows...</p>
           </div>
         )}
 
@@ -74,14 +76,19 @@ export default function TrendingSection() {
         )}
 
         {!isLoading && !isError && (
-          <div className="movies-grid">
-            {trending.slice(0, 10).map((movie, index) => (
-              <div className="movie-card" key={movie.id}>
+          <div className="card-grid">
+            {trending.slice(0, 10).map((tvShow, index) => (
+              <article
+                className="media-card"
+                key={tvShow.id}
+                onClick={() => navigate(`/tv/${tvShow.id}`)}
+                style={{ cursor: "pointer" }}
+              >
                 <div className="movie-poster">
-                  {movie.poster_path ? (
+                  {tvShow.poster_path ? (
                     <img
-                      src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                      alt={movie.title}
+                      src={`https://image.tmdb.org/t/p/w300${tvShow.poster_path}`}
+                      alt={tvShow.name}
                       className="poster-image"
                       loading="lazy"
                     />
@@ -91,29 +98,34 @@ export default function TrendingSection() {
                     </div>
                   )}
                   <div className="movie-rating">
-                    ⭐ {formatVoteAverage(movie.vote_average)}
+                    ⭐ {formatVoteAverage(tvShow.vote_average)}
                   </div>
                   {index < 3 && <div className="top-ranked">#{index + 1}</div>}
                 </div>
 
                 <div className="movie-info">
-                  <h3 className="movie-title">{movie.title}</h3>
+                  <h3 className="movie-title">{tvShow.name}</h3>
                   <div className="movie-meta">
-                    <span className="release-date">{formatDate(movie.release_date)}</span>
-                    <span className={`adult-badge ${movie.adult ? "adult" : "everyone"}`}>
-                      {movie.adult ? "18+" : "ALL"}
+                    <span className="release-date">{formatDate(tvShow.first_air_date)}</span>
+                    <span className={`adult-badge ${tvShow.adult ? "adult" : "everyone"}`}>
+                      {tvShow.adult ? "18+" : "ALL"}
                     </span>
                   </div>
                   <p className="movie-overview">
-                    {movie.overview
-                      ? (movie.overview.length > 120
-                        ? `${movie.overview.substring(0, 120)}...`
-                        : movie.overview)
+                    {tvShow.overview
+                      ? (tvShow.overview.length > 120
+                        ? `${tvShow.overview.substring(0, 120)}...`
+                        : tvShow.overview)
                       : "No description available."}
                   </p>
-                  <button className="details-button">View Details →</button>
+                  <button className="details-button" onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/tv/${tvShow.id}`);
+                  }}>
+                    View Details →
+                  </button>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}

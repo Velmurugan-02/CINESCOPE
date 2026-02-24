@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import './Style/App.css'
 import RoutesConfig from './RoutesConfig'
+import './Style/App.css'
 
 function App() {
 
