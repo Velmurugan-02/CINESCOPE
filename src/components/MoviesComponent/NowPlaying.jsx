@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
+import { useNavigate } from "react-router-dom";
 import "./NowPlaying.css";
 
 export default function NowPlaying() {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -11,48 +13,38 @@ export default function NowPlaying() {
   const getYear = (dateStr) => (dateStr ? dateStr.slice(0, 4) : "----");
 
   useEffect(() => {
-    const fetchMixedTamilAndEnglish = async () => {
+    const fetchNowPlaying = async () => {
       try {
         setIsLoading(true);
         setIsError(false);
+        const res = await tmdbRequest("/movie/now_playing", {
+          page: 1,
+          region: "IN",
+        });
 
-        const [ta, en] = await Promise.all([
-          tmdbRequest("/movie/now_playing", {
-            with_original_language: "ta",
-            sort_by: "popularity.desc",
-            include_adult: false,
-            page: 1,
-            region: "IN",
-          }),
-          tmdbRequest("/movie/now_playing", {
-            with_original_language: "en",
-            sort_by: "popularity.desc",
-            include_adult: false,
-            page: 1,
-            region: "IN",
-          }),
-        ]);
+        const results = res?.results || [];
 
-        const combined = [...(ta.results || []), ...(en.results || [])];
-        // dedupe by movie.id
-        const unique = Array.from(new Map(combined.map((m) => [m.id, m])).values());
+        const filtered = results.filter(
+          (m) => m?.original_language === "ta" || m?.original_language === "en"
+        );
 
-        // sort by popularity
+        const unique = Array.from(new Map(filtered.map((m) => [m.id, m])).values());
+
         unique.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
 
         setMovies(unique);
       } catch (err) {
         setIsError(true);
-        console.error("Error fetching mixed movies:", err);
+        console.error("Error fetching now playing movies:", err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchMixedTamilAndEnglish();
+    fetchNowPlaying();
   }, []);
 
-  const visible = movies.slice(0, 10);
+  const visible = useMemo(() => movies.slice(0, 10), [movies]);
 
   return (
     <section className="home-section">
@@ -97,23 +89,24 @@ export default function NowPlaying() {
                     <div className="media-noPoster">No Poster</div>
                   )}
 
-                  {/* badges */}
                   <div className="media-badges">
                     <span className="badge">{lang || "NA"}</span>
                     <span className="badge">⭐ {rating}</span>
                   </div>
 
-                  {/* top rank for first 3 */}
                   {index < 3 && <div className="rank-badge">#{index + 1}</div>}
 
-                  {/* hover overlay (uses overview + backdrop_path idea) */}
                   <div className="media-overlay">
                     <p className="media-overview">{overview}</p>
                     <div className="media-stats">
                       <span>Votes: {votes}</span>
                       <span>Pop: {Math.round(popularity)}</span>
                     </div>
-                    <button className="media-cta" type="button">
+                    <button
+                      className="media-cta"
+                      type="button"
+                      onClick={() => navigate(`/movie/${movie.id}`)}
+                    >
                       View details
                     </button>
                   </div>

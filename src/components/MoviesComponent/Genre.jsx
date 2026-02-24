@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
+import { useNavigate } from "react-router-dom";
 import "./Genre.css";
 
 // Gradient pairs per genre for pill accent colours
@@ -33,6 +34,7 @@ function getGradient(id) {
 }
 
 export default function Genre() {
+    const navigate = useNavigate();
     const [genres, setGenres] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -92,6 +94,7 @@ export default function Genre() {
                                 "--pill-gradient": getGradient(genre.id),
                                 animationDelay: `${i * 0.04}s`,
                             }}
+                            onClick={() => navigate(`/genre/movie/list/${genre.id}`)}
                         >
                             <span className="genre-pill-bg" />
                             <span className="genre-pill-icon">

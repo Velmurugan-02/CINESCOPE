@@ -8,6 +8,7 @@ import MovieDetails from "../pages/MovieDetails";
 import TVDetails from "../pages/TVDetails";
 import PersonDetails from "../pages/PersonDetails";
 import WatchList from "../pages/WatchList";
+import GenreMovies from "../pages/GenreMovies";
 import NotFound from "../pages/NotFound";
 
 const RoutesConfig = () => {
@@ -23,6 +24,8 @@ const RoutesConfig = () => {
       <Route path="/movie/:id" element={<MovieDetails />} />
       <Route path="/tv/:id" element={<TVDetails />} />
       <Route path="/person/:id" element={<PersonDetails />} />
+
+      <Route path="/genre/movie/list/:id" element={<GenreMovies />} />
 
       <Route path="/watchlist" element={<WatchList />} />
       <Route path="*" element={<NotFound />} />
