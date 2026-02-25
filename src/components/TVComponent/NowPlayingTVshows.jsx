@@ -17,7 +17,7 @@ export default function NowPlaying() {
       try {
         setIsLoading(true);
         setIsError(false);
-        const res = await tmdbRequest("/tv/now_playing", {
+        const res = await tmdbRequest("/tv/on_the_air", {
           page: 1,
           region: "IN",
         });
@@ -43,7 +43,7 @@ export default function NowPlaying() {
   return (
     <section className="home-section">
       <div className="section-header">
-        <h2 className="section-title">On Theaters</h2>
+        <h2 className="section-title">On The Air</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>
 
