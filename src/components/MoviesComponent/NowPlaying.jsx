@@ -83,12 +83,16 @@ export default function NowPlaying() {
                     <div className="media-noPoster">No Poster</div>
                   )}
 
-                  <div className="media-badges">
-                    <span className="badge">{lang || "NA"}</span>
-                    <span className="badge">⭐ {rating}</span>
-                  </div>
+                  {/* Standard badges: Rank/Lang on Left, Rating on Right */}
+                  {index < 3 ? (
+                    <div className="top-ranked">#{index + 1}</div>
+                  ) : (
+                    <div className="movie-lang">{lang || "EN"}</div>
+                  )}
 
-                  {index < 3 && <div className="rank-badge">#{index + 1}</div>}
+                  <div className="movie-rating">
+                    ⭐ {rating}
+                  </div>
 
                   <div className="media-overlay">
                     <p className="media-overview">{overview}</p>

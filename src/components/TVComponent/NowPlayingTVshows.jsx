@@ -17,7 +17,7 @@ export default function NowPlaying() {
       try {
         setIsLoading(true);
         setIsError(false);
-        const res = await tmdbRequest("/tv/on_the_air", {
+        const res = await tmdbRequest("/tv/airing_today", {
           page: 1,
           region: "IN",
         });
@@ -29,7 +29,7 @@ export default function NowPlaying() {
         setTv(results);
       } catch (err) {
         setIsError(true);
-        console.error("Error fetching now playing tv shows:", err);
+        console.error("Error fetching airing today tv shows:", err);
       } finally {
         setIsLoading(false);
       }
@@ -43,7 +43,7 @@ export default function NowPlaying() {
   return (
     <section className="home-section">
       <div className="section-header">
-        <h2 className="section-title">On The Air</h2>
+        <h2 className="section-title">Airing Today</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>
 
@@ -83,12 +83,16 @@ export default function NowPlaying() {
                     <div className="media-noPoster">No Poster</div>
                   )}
 
-                  <div className="media-badges">
-                    <span className="badge">{lang || "NA"}</span>
-                    <span className="badge">⭐ {rating}</span>
-                  </div>
+                  {/* Standard badges: Rank/Lang on Left, Rating on Right */}
+                  {index < 3 ? (
+                    <div className="top-ranked">#{index + 1}</div>
+                  ) : (
+                    <div className="movie-lang">{lang || "EN"}</div>
+                  )}
 
-                  {index < 3 && <div className="rank-badge">#{index + 1}</div>}
+                  <div className="movie-rating">
+                    ⭐ {rating}
+                  </div>
 
                   <div className="media-overlay">
                     <p className="media-overview">{overview}</p>

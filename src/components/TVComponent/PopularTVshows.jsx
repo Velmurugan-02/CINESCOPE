@@ -74,47 +74,49 @@ export default function PopularTVshows() {
               : null;
 
             return (
-                <article className="media-card" key={tvShow.id}>
-                  <div className="media-posterWrap">
-                    {poster ? (
-                      <img className="media-poster" src={poster} alt={title} loading="lazy" />
-                    ) : (
-                      <div className="media-noPoster">No Poster</div>
-                    )}
+              <article className="media-card" key={tvShow.id}>
+                <div className="media-posterWrap">
+                  {poster ? (
+                    <img className="media-poster" src={poster} alt={title} loading="lazy" />
+                  ) : (
+                    <div className="media-noPoster">No Poster</div>
+                  )}
 
-                    {/* badges */}
-                    <div className="media-badges">
-                      <span className="badge">{lang || "NA"}</span>
-                      <span className="badge">⭐ {rating}</span>
-                    </div>
+                  {/* Standard badges: Rank/Lang on Left, Rating on Right */}
+                  {index < 3 ? (
+                    <div className="top-ranked">#{index + 1}</div>
+                  ) : (
+                    <div className="movie-lang">{lang || "EN"}</div>
+                  )}
 
-                    {/* top rank for first 3 */}
-                    {index < 3 && <div className="rank-badge">#{index + 1}</div>}
-
-                    {/* hover overlay (uses overview + backdrop_path idea) */}
-                    <div className="media-overlay">
-                      <p className="media-overview">{overview}</p>
-                      <div className="media-stats">
-                        <span>Votes: {votes}</span>
-                        <span>Pop: {Math.round(popularity)}</span>
-                      </div>
-                      <button className="media-cta" type="button" onClick={()=>{
-                        navigate(`/tv/${tvShow.id}`)
-                      }}>
-                        View details
-                      </button>
-                    </div>
+                  <div className="movie-rating">
+                    ⭐ {rating}
                   </div>
 
-                  <div className="media-info">
-                    <h3 className="media-title" title={title}>
-                      {title}
-                    </h3>
-                    <p className="media-meta">
-                      {year} • {votes.toLocaleString()} votes
-                    </p>
+                  {/* hover overlay (uses overview + backdrop_path idea) */}
+                  <div className="media-overlay">
+                    <p className="media-overview">{overview}</p>
+                    <div className="media-stats">
+                      <span>Votes: {votes}</span>
+                      <span>Pop: {Math.round(popularity)}</span>
+                    </div>
+                    <button className="media-cta" type="button" onClick={() => {
+                      navigate(`/tv/${tvShow.id}`)
+                    }}>
+                      View details
+                    </button>
                   </div>
-                </article>
+                </div>
+
+                <div className="media-info">
+                  <h3 className="media-title" title={title}>
+                    {title}
+                  </h3>
+                  <p className="media-meta">
+                    {year} • {votes.toLocaleString()} votes
+                  </p>
+                </div>
+              </article>
             );
           })}
         </div>

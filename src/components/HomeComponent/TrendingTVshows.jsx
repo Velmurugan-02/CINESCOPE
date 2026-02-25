@@ -97,10 +97,18 @@ export default function TrendingTVshows() {
                       <span>No Poster Available</span>
                     </div>
                   )}
+
+                  {/* Top-Right Rating */}
                   <div className="movie-rating">
                     ⭐ {formatVoteAverage(tvShow.vote_average)}
                   </div>
-                  {index < 3 && <div className="top-ranked">#{index + 1}</div>}
+
+                  {/* Top-Left Rank or Language */}
+                  {index < 3 ? (
+                    <div className="top-ranked">#{index + 1}</div>
+                  ) : (
+                    <div className="movie-lang">{(tvShow.original_language || "EN").toUpperCase()}</div>
+                  )}
                 </div>
 
                 <div className="movie-info">
