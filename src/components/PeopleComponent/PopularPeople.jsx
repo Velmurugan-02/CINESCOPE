@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
-import { setCookie, getCookie} from "../../utils/cookieUtils";
-import "./PopularMoviesSection.css";
+import "./PopularPeople.css";
 
-export default function PopularMoviesSection() {
+export default function PopularPeople() {
   const navigate = useNavigate();
-  const [movies, setMovies] = useState([]);
+  const [people, setPeople] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -14,56 +13,43 @@ export default function PopularMoviesSection() {
   const getYear = (dateStr) => (dateStr ? dateStr.slice(0, 4) : "----");
 
   useEffect(() => {
-    const fetchPopularMovies = async () => {
+    const fetchPopularPeople = async () => {
       try {
         setIsLoading(true);
         setIsError(false);
 
-        const res = await tmdbRequest("/discover/movie", {
+        const res = await tmdbRequest("/person/popular", {
           with_original_language: "en",
           sort_by: "popularity.desc",
           include_adult: false,
           page: 1,
         });
 
-        setMovies(res?.results || []);
+        setPeople(res?.results || []);
       } catch (err) {
         setIsError(true);
-        console.error("Error fetching popular movies:", err);
+        console.error("Error fetching popular persons:", err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchPopularMovies();
+    fetchPopularPeople();
   }, []);
 
-  const visible = movies.slice(0, 10);
-
-    const watchlater = (movie) => {
-        const parsed = JSON.parse(getCookie("watchlater") || "[]");
-        const existingList = Array.isArray(parsed) ? parsed : [];
-        const isAlreadyAdded = existingList.find((item) => item.id === movie.id);
-        if (isAlreadyAdded) {
-          console.log(`${movie.title} is already in your Watch Later list!`);
-          return;
-        }
-        const updatedList = [...existingList, movie];
-        setCookie("watchlater", JSON.stringify(updatedList), 7);
-        console.log(`${movie.title} has been added to your Watch Later list!`);
-    };
+  const visible = people.slice(0, 10);
 
   return (
     <section className="home-section">
       <div className="section-header">
-        <h2 className="section-title">Popular Movies</h2>
+        <h2 className="section-title">Popular People</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>
 
       {isLoading && (
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading movies...</p>
+          <p>Loading people...</p>
         </div>
       )}
 
@@ -75,20 +61,21 @@ export default function PopularMoviesSection() {
 
       {!isLoading && !isError && (
         <div className="card-grid">
-          {visible.map((movie, index) => {
-            const title = movie.title || movie.original_title || "Untitled";
-            const year = getYear(movie.release_date);
-            const lang = (movie.original_language || "").toUpperCase();
-            const rating = formatVoteAverage(movie.vote_average);
-            const votes = movie.vote_count ?? 0;
-            const popularity = movie.popularity ?? 0;
-            const overview = movie.overview || "No overview available.";
-            const poster = movie.poster_path
-              ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+          {visible.map((person, index) => {
+            const title = person.name || person.original_name || "Untitled";
+            const year = getYear(person.birthday || person.known_for_department || "");
+            const lang = (person.original_language || "").toUpperCase();
+            const rating = formatVoteAverage(person.vote_average);
+            const votes = person.vote_count ?? 0;
+            const popularity = person.popularity ?? 0;
+            const knownFor = person.known_for?.[0]?.title || person.known_for?.[0]?.name || "View details";
+            const overview = `${person.known_for_department || "Unknown"}\n${knownFor}\nPopularity: ${Math.round(popularity)}`;
+            const poster = person.profile_path
+              ? `https://image.tmdb.org/t/p/w300${person.profile_path}`
               : null;
 
             return (
-              <article className="media-card" key={movie.id}>
+              <article className="media-card" key={person.id}>
                 <div className="media-posterWrap">
                   {poster ? (
                     <img className="media-poster" src={poster} alt={title} loading="lazy" />
@@ -115,12 +102,9 @@ export default function PopularMoviesSection() {
                       <span>Pop: {Math.round(popularity)}</span>
                     </div>
                     <button className="media-cta" type="button" onClick={() => {
-                      navigate(`/movie/${movie.id}`)
+                      navigate(`/person/${person.id}`)
                     }}>
                       View details
-                    </button>
-                    <button className="media-cta" type="button" onClick={() => watchlater(movie)}>
-                      Watch Later
                     </button>
                   </div>
                 </div>

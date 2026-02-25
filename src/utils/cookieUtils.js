@@ -8,8 +8,9 @@ export function setCookie(name, value, days = 365) {
 
 export function getCookie(name) {
   const key = encodeURIComponent(name) + "=";
-  return document.cookie
+  const encoded = document.cookie
     .split("; ")
     .find((row) => row.startsWith(key))
     ?.slice(key.length) || null;
+  return encoded ? decodeURIComponent(encoded) : null;
 }

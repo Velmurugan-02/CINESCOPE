@@ -27,7 +27,7 @@ export default function Navbar() {
     { to: "/movies", label: "Movies", Icon: Film },
     { to: "/tv", label: "TV Shows", Icon: Tv },
     { to: "/people", label: "People", Icon: Users },
-    { to: "/watchlist", label: "Watchlist", Icon: Bookmark },
+    { to: "/watchlater", label: "WatchLater", Icon: Bookmark },
   ];
 
   return (

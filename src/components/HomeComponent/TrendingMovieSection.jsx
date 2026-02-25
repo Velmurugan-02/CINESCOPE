@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
 import "./TrendingMovieSection.css";
+import { setCookie, getCookie } from "../../utils/cookieUtils";
 
 export default function TrendingMovieSection() {
   const [trending, setTrending] = useState([]);
@@ -42,6 +43,19 @@ export default function TrendingMovieSection() {
 
   const formatVoteAverage = (vote) => {
     return vote ? vote.toFixed(1) : "N/A";
+  };
+
+  const watchlater = (movie) => {
+      const parsed = JSON.parse(getCookie("watchlater") || "[]");
+      const existingList = Array.isArray(parsed) ? parsed : [];
+      const isAlreadyAdded = existingList.find((item) => item.id === movie.id);
+      if (isAlreadyAdded) {
+        console.log(`${movie.title} is already in your Watch Later list!`);
+        return;
+      }
+      const updatedList = [...existingList, movie];
+      setCookie("watchlater", JSON.stringify(updatedList), 7);
+      console.log(`${movie.title} has been added to your Watch Later list!`);
   };
 
   return (
@@ -131,6 +145,12 @@ export default function TrendingMovieSection() {
                     navigate(`/movie/${movie.id}`);
                   }}>
                     View Details →
+                  </button>
+                  <button className="media-cta" type="button" onClick={(e) => {
+                    e.stopPropagation();
+                    watchlater(movie);
+                  }}>
+                    Watch Later
                   </button>
                 </div>
               </div>
