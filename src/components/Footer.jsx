@@ -16,7 +16,9 @@ const Footer = () => {
                 {/* Brand Column */}
                 <div className="footer-brand">
                     <div className="footer-logo-wrap">
-                        <img src={logo} alt="CineScope Logo" className="footer-logo" />
+                        <span className="navLogo_text">
+                            CINE<span className="navLogo_accent">SCOPE</span>
+                        </span>
                     </div>
                     <p className="footer-tagline">
                         Your ultimate destination for movies, TV shows, and the people behind them.

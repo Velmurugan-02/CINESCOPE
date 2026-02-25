@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
-import "./NowPlaying.css";
+import "./NowPlayingTVshows.css";
 
 export default function NowPlaying() {
   const navigate = useNavigate();
-  const [movies, setMovies] = useState([]);
+  const [tv, setTv] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -17,7 +17,7 @@ export default function NowPlaying() {
       try {
         setIsLoading(true);
         setIsError(false);
-        const res = await tmdbRequest("/movie/now_playing", {
+        const res = await tmdbRequest("/tv/now_playing", {
           page: 1,
           region: "IN",
         });
@@ -26,10 +26,10 @@ export default function NowPlaying() {
 
         results.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
 
-        setMovies(results);
+        setTv(results);
       } catch (err) {
         setIsError(true);
-        console.error("Error fetching now playing movies:", err);
+        console.error("Error fetching now playing tv shows:", err);
       } finally {
         setIsLoading(false);
       }
@@ -38,7 +38,7 @@ export default function NowPlaying() {
     fetchNowPlaying();
   }, []);
 
-  const visible = useMemo(() => movies.slice(0, 10), [movies]);
+  const visible = useMemo(() => tv.slice(0, 10), [tv]);
 
   return (
     <section className="home-section">
@@ -50,7 +50,7 @@ export default function NowPlaying() {
       {isLoading && (
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading movies...</p>
+          <p>Loading tv shows...</p>
         </div>
       )}
 
@@ -62,20 +62,20 @@ export default function NowPlaying() {
 
       {!isLoading && !isError && (
         <div className="card-grid">
-          {visible.map((movie, index) => {
-            const title = movie.title || movie.original_title || "Untitled";
-            const year = getYear(movie.release_date);
-            const lang = (movie.original_language || "").toUpperCase();
-            const rating = formatVoteAverage(movie.vote_average);
-            const votes = movie.vote_count ?? 0;
-            const popularity = movie.popularity ?? 0;
-            const overview = movie.overview || "No overview available.";
-            const poster = movie.poster_path
-              ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+          {visible.map((tv, index) => {
+            const title = tv.name || tv.original_name || "Untitled";
+            const year = getYear(tv.first_air_date);
+            const lang = (tv.original_language || "").toUpperCase();
+            const rating = formatVoteAverage(tv.vote_average);
+            const votes = tv.vote_count ?? 0;
+            const popularity = tv.popularity ?? 0;
+            const overview = tv.overview || "No overview available.";
+            const poster = tv.poster_path
+              ? `https://image.tmdb.org/t/p/w300${tv.poster_path}`
               : null;
 
             return (
-              <article className="media-card" key={movie.id}>
+              <article className="media-card" key={tv.id}>
                 <div className="media-posterWrap">
                   {poster ? (
                     <img className="media-poster" src={poster} alt={title} loading="lazy" />
@@ -99,7 +99,7 @@ export default function NowPlaying() {
                     <button
                       className="media-cta"
                       type="button"
-                      onClick={() => navigate(`/movie/${movie.id}`)}
+                      onClick={() => navigate(`/tv/${tv.id}`)}
                     >
                       View details
                     </button>

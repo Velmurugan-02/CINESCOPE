@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
-import "./Navbar.css";
 import { useState, useEffect } from "react";
 import { Home, Film, Tv, Users, Bookmark, Menu, X } from "lucide-react";
+import "./Navbar.css";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);

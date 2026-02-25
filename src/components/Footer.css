@@ -66,22 +66,19 @@
     gap: 1.1rem;
 }
 
-.footer-logo-wrap {
-    display: inline-block;
-    width: fit-content;
+.navLogo_text {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
-.footer-logo {
-    height: 48px;
-    width: auto;
-    border-radius: 10px;
-    filter: drop-shadow(0 4px 12px rgba(114, 16, 211, 0.35));
-    transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-.footer-logo:hover {
-    filter: drop-shadow(0 6px 18px rgba(114, 16, 211, 0.55));
-    transform: scale(1.04);
+.navLogo_accent {
+  background: linear-gradient(100deg, var(--nav-amber), var(--nav-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .footer-tagline {

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
-import "./PopularMoviesSection.css";
+import "./PopularTVshows.css";
 
-export default function PopularMoviesSection() {
+export default function PopularTVshows() {
   const navigate = useNavigate();
-  const [movies, setMovies] = useState([]);
+  const [tvShows, setTvShows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -13,43 +13,43 @@ export default function PopularMoviesSection() {
   const getYear = (dateStr) => (dateStr ? dateStr.slice(0, 4) : "----");
 
   useEffect(() => {
-    const fetchPopularMovies = async () => {
+    const fetchPopularTVShows = async () => {
       try {
         setIsLoading(true);
         setIsError(false);
 
-        const res = await tmdbRequest("/discover/movie", {
+        const res = await tmdbRequest("/discover/tv", {
           with_original_language: "en",
           sort_by: "popularity.desc",
           include_adult: false,
           page: 1,
         });
 
-        setMovies(res?.results || []);
+        setTvShows(res?.results || []);
       } catch (err) {
         setIsError(true);
-        console.error("Error fetching popular movies:", err);
+        console.error("Error fetching popular TV shows:", err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchPopularMovies();
+    fetchPopularTVShows();
   }, []);
 
-  const visible = movies.slice(0, 10);
+  const visible = tvShows.slice(0, 10);
 
   return (
     <section className="home-section">
       <div className="section-header">
-        <h2 className="section-title">Popular Movies</h2>
+        <h2 className="section-title">Popular TV Shows</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>
 
       {isLoading && (
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Loading movies...</p>
+          <p>Loading TV shows...</p>
         </div>
       )}
 
@@ -61,20 +61,20 @@ export default function PopularMoviesSection() {
 
       {!isLoading && !isError && (
         <div className="card-grid">
-          {visible.map((movie, index) => {
-            const title = movie.title || movie.original_title || "Untitled";
-            const year = getYear(movie.release_date);
-            const lang = (movie.original_language || "").toUpperCase();
-            const rating = formatVoteAverage(movie.vote_average);
-            const votes = movie.vote_count ?? 0;
-            const popularity = movie.popularity ?? 0;
-            const overview = movie.overview || "No overview available.";
-            const poster = movie.poster_path
-              ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+          {visible.map((tvShow, index) => {
+            const title = tvShow.name || tvShow.original_name || "Untitled";
+            const year = getYear(tvShow.first_air_date);
+            const lang = (tvShow.original_language || "").toUpperCase();
+            const rating = formatVoteAverage(tvShow.vote_average);
+            const votes = tvShow.vote_count ?? 0;
+            const popularity = tvShow.popularity ?? 0;
+            const overview = tvShow.overview || "No overview available.";
+            const poster = tvShow.poster_path
+              ? `https://image.tmdb.org/t/p/w300${tvShow.poster_path}`
               : null;
 
             return (
-                <article className="media-card" key={movie.id}>
+                <article className="media-card" key={tvShow.id}>
                   <div className="media-posterWrap">
                     {poster ? (
                       <img className="media-poster" src={poster} alt={title} loading="lazy" />
@@ -99,7 +99,7 @@ export default function PopularMoviesSection() {
                         <span>Pop: {Math.round(popularity)}</span>
                       </div>
                       <button className="media-cta" type="button" onClick={()=>{
-                        navigate(`/movie/${movie.id}`)
+                        navigate(`/tv/${tvShow.id}`)
                       }}>
                         View details
                       </button>
