@@ -40,8 +40,8 @@ export default function PopularPeople() {
   const visible = people.slice(0, 10);
 
   return (
-    <section className="home-section">
-      <div className="section-header">
+    <section className="popular-people-section">
+      <div className="popular-people-header">
         <h2 className="section-title">Popular People</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>

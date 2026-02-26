@@ -45,8 +45,8 @@ export default function TrendingPeople() {
   };
 
   return (
-    <section className="trending-section">
-      <div className="trending-header">
+    <section className="trending-people-section">
+      <div className="trending-people-header">
         <div className="header-left">
           <h1 className="trending-title">Trending People</h1>
           <span className="trending-badge">{timeWindow === "week" ? "This Week" : "Today"}</span>

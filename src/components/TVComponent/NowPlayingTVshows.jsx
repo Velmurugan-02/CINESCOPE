@@ -41,8 +41,8 @@ export default function NowPlaying() {
   const visible = useMemo(() => tv.slice(0, 10), [tv]);
 
   return (
-    <section className="home-section">
-      <div className="section-header">
+    <section className="airing-today-section">
+      <div className="airing-today-header">
         <h2 className="section-title">Airing Today</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>

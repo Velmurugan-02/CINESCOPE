@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
+import { setCookie, getCookie } from "../../utils/cookieUtils";
 import "./NowPlaying.css";
 
 export default function NowPlaying() {
@@ -40,9 +41,22 @@ export default function NowPlaying() {
 
   const visible = useMemo(() => movies.slice(0, 10), [movies]);
 
+  const watchlater = (movie) => {
+    const parsed = JSON.parse(getCookie("watchlater") || "[]");
+    const existingList = Array.isArray(parsed) ? parsed : [];
+    const isAlreadyAdded = existingList.find((item) => item.id === movie.id);
+    if (isAlreadyAdded) {
+      console.log(`${movie.title} is already in your Watch Later list!`);
+      return;
+    }
+    const updatedList = [...existingList, movie];
+    setCookie("watchlater", JSON.stringify(updatedList), 7);
+    console.log(`${movie.title} has been added to your Watch Later list!`);
+  };
+
   return (
-    <section className="home-section">
-      <div className="section-header">
+    <section className="theaters-section">
+      <div className="theaters-header">
         <h2 className="section-title">On Theaters</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>
@@ -106,6 +120,9 @@ export default function NowPlaying() {
                       onClick={() => navigate(`/movie/${movie.id}`)}
                     >
                       View details
+                    </button>
+                    <button className="media-cta" type="button" onClick={() => watchlater(movie)}>
+                      Watch Later
                     </button>
                   </div>
                 </div>

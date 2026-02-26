@@ -239,6 +239,10 @@
     margin: 0;
     font-size: 0.8rem;
     color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
 }
 
 /* Loading & Error */

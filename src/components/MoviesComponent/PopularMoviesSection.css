@@ -1,6 +1,6 @@
 /* PopularMoviesSection.css - Primary Theme */
 
-.home-section {
+.popular-movies-section {
   margin-bottom: 3rem;
   max-width: 1400px;
   margin-left: auto;
@@ -9,7 +9,7 @@
 }
 
 /* Header */
-.section-header {
+.popular-movies-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -270,7 +270,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .section-header {
+  .popular-movies-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;

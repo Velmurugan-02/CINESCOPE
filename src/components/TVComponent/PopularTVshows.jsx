@@ -40,8 +40,8 @@ export default function PopularTVshows() {
   const visible = tvShows.slice(0, 10);
 
   return (
-    <section className="home-section">
-      <div className="section-header">
+    <section className="popular-tv-section">
+      <div className="popular-tv-header">
         <h2 className="section-title">Popular TV Shows</h2>
         <p className="section-subtitle">Top picks based on popularity</p>
       </div>
