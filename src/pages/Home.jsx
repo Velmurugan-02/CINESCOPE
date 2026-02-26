@@ -1,7 +1,6 @@
 import TrendingMovieSection from "../components/HomeComponent/TrendingMovieSection";
 import TrendingTVshows from "../components/HomeComponent/TrendingTVshows";
 import { IntroComponent } from "../components/HomeComponent/IntroComponent";
-import TrendingPeople from "../components/HomeComponent/TrendingPeople";
 
 const Home = () => {
     return (
@@ -14,9 +13,6 @@ const Home = () => {
             </div>
             <div>
                 <TrendingTVshows />
-            </div>
-            <div>
-                <TrendingPeople />
             </div>
         </>
     );
