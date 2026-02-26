@@ -46,21 +46,21 @@ export default function TrendingMovieSection() {
   };
 
   const watchlater = (movie) => {
-      const parsed = JSON.parse(getCookie("watchlater") || "[]");
-      const existingList = Array.isArray(parsed) ? parsed : [];
-      const isAlreadyAdded = existingList.find((item) => item.id === movie.id);
-      if (isAlreadyAdded) {
-        console.log(`${movie.title} is already in your Watch Later list!`);
-        return;
-      }
-      const updatedList = [...existingList, movie];
-      setCookie("watchlater", JSON.stringify(updatedList), 7);
-      console.log(`${movie.title} has been added to your Watch Later list!`);
+    const parsed = JSON.parse(getCookie("watchlater") || "[]");
+    const existingList = Array.isArray(parsed) ? parsed : [];
+    const isAlreadyAdded = existingList.find((item) => item.id === movie.id);
+    if (isAlreadyAdded) {
+      console.log(`${movie.title} is already in your Watch Later list!`);
+      return;
+    }
+    const updatedList = [...existingList, movie];
+    setCookie("watchlater", JSON.stringify(updatedList), 7);
+    console.log(`${movie.title} has been added to your Watch Later list!`);
   };
 
   return (
-    <section className="trending-section">
-      <div className="trending-header">
+    <section className="movies-trending-section">
+      <div className="movies-trending-header">
         <div className="header-left">
           <h1 className="trending-title">Trending Movies</h1>
           <span className="trending-badge">{timeWindow === "week" ? "This Week" : "Today"}</span>

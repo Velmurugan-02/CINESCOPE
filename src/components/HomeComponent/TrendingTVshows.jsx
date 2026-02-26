@@ -45,8 +45,8 @@ export default function TrendingTVshows() {
   };
 
   return (
-    <section className="trending-section">
-      <div className="trending-header">
+    <section className="tv-trending-section">
+      <div className="tv-trending-header">
         <div className="header-left">
           <h1 className="trending-title">Trending TV Shows</h1>
           <span className="trending-badge">{timeWindow === "week" ? "This Week" : "Today"}</span>
@@ -111,15 +111,15 @@ export default function TrendingTVshows() {
                   )}
                 </div>
 
-                <div className="movie-info">
-                  <h3 className="movie-title">{tvShow.name}</h3>
-                  <div className="movie-meta">
+                <div className="media-info">
+                  <h3 className="media-title">{tvShow.name}</h3>
+                  <div className="media-meta">
                     <span className="release-date">{formatDate(tvShow.first_air_date)}</span>
                     <span className={`adult-badge ${tvShow.adult ? "adult" : "everyone"}`}>
                       {tvShow.adult ? "18+" : "ALL"}
                     </span>
                   </div>
-                  <p className="movie-overview">
+                  <p className="media-overview">
                     {tvShow.overview
                       ? (tvShow.overview.length > 120
                         ? `${tvShow.overview.substring(0, 120)}...`
@@ -132,12 +132,12 @@ export default function TrendingTVshows() {
                   }}>
                     View Details →
                   </button>
-                   <button className="media-cta" type="button" onClick={() => {
-                      
-                    }
-                    }>
-                      Watch Later
-                    </button>
+                  <button className="media-cta" type="button" onClick={() => {
+
+                  }
+                  }>
+                    Watch Later
+                  </button>
                 </div>
               </article>
             ))}

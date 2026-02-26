@@ -165,18 +165,6 @@
     transform: translateY(0);
 }
 
-.media-overview {
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.9);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
 .media-stats {
     display: flex;
     justify-content: space-between;

@@ -1,6 +1,6 @@
 /* TrendingSection.css - Primary Theme */
 
-.trending-section {
+.movies-trending-section {
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 1rem;
@@ -8,7 +8,7 @@
 }
 
 /* Header Styles */
-.trending-header {
+.movies-trending-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -257,7 +257,7 @@
 }
 
 .movie-overview {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-2);
   line-height: 1.5;
   margin: 0.25rem 0 0.75rem 0;
@@ -367,7 +367,7 @@
 }
 
 @media (max-width: 480px) {
-  .trending-header {
+  .movies-trending-header {
     flex-direction: row;
     align-items: center;
   }

@@ -1,6 +1,8 @@
 import { useEffect,useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTVDetails } from "../api/tmdb";
+import "./TVDetails.css";
+
 const TVDetails = () =>{
     const {id} = useParams();
     const navigate = useNavigate();
