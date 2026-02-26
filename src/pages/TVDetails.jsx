@@ -1,8 +1,9 @@
 import { useEffect,useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getTVDetails } from "../api/tmdb";
 const TVDetails = () =>{
     const {id} = useParams();
+    const navigate = useNavigate();
     const [tv, setTv] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError]   = useState(null);
@@ -23,6 +24,12 @@ const TVDetails = () =>{
     if (error)   return <p>{error}</p>;
     return(
         <div>
+            <button 
+                onClick={() => navigate(-1)}
+                className="btn_close"
+            >
+                ← Back
+            </button>
             <h1>{tv?.title}</h1>
             <img src={`https://image.tmdb.org/t/p/w500${tv?.poster_path}`} alt={tv?.title} />
             <p>{tv?.overview}</p>

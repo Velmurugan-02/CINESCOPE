@@ -84,6 +84,9 @@ export default function Navbar() {
 
       {/* ── MOBILE DRAWER ── */}
       <div className={`navDrawer${menuOpen ? " open" : ""}`}>
+        <button className="navDrawer_close" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
+          <X size={22} />
+        </button>
         <div className="navDrawer_inner">
           {/* Search inside drawer */}
           <div className="navDrawer_search">
