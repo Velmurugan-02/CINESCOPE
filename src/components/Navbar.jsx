@@ -68,6 +68,7 @@ export default function Navbar() {
 
           {/* ── RIGHT CONTROLS ── */}
           <div className="navControls">
+            {/* <SignInLogin /> */}
             <ThemeToggle />
             <button
               className="navHamburger"

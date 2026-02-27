@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieDetails } from "../api/tmdb";
+import GlassSpinner from "../components/GlassSpinner";
 import "./MovieDetails.css";
 
 const MovieDetails = () => {
@@ -22,7 +23,7 @@ const MovieDetails = () => {
     };
     fetch();
   }, [id]);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <GlassSpinner fullPage message="Fetching Details" />;
   if (error) return <p>{error}</p>;
   return (
     <div className="movie-details-page">

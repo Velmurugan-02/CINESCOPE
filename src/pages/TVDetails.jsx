@@ -1,17 +1,18 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTVDetails } from "../api/tmdb";
+import GlassSpinner from "../components/GlassSpinner";
 import "./TVDetails.css";
 
-const TVDetails = () =>{
-    const {id} = useParams();
+const TVDetails = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [tv, setTv] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError]   = useState(null);
-    useEffect(() =>{
-        const fetch = async () =>{
-            try{
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetch = async () => {
+            try {
                 const data = await getTVDetails(id);
                 setTv(data);
                 setLoading(false);
@@ -22,20 +23,22 @@ const TVDetails = () =>{
         };
         fetch();
     }, [id]);
-    if (loading) return <p>Loading...</p>;
-    if (error)   return <p>{error}</p>;
-    return(
-        <div>
-            <button 
+
+    if (loading) return <GlassSpinner fullPage message="Fetching Series Details" />;
+    if (error) return <p>{error}</p>;
+
+    return (
+        <div className="tv-details-page">
+            <button
                 onClick={() => navigate(-1)}
                 className="btn_close"
             >
                 ← Back
             </button>
-            <h1>{tv?.title}</h1>
-            <img src={`https://image.tmdb.org/t/p/w500${tv?.poster_path}`} alt={tv?.title} />
+            <h1>{tv?.name}</h1>
+            <img src={`https://image.tmdb.org/t/p/w500${tv?.poster_path}`} alt={tv?.name} />
             <p>{tv?.overview}</p>
-            <p>⭐ {tv?.vote_average} · {tv?.first_air_date?.slice(0,4)}</p>
+            <p>⭐ {tv?.vote_average} · {tv?.first_air_date?.slice(0, 4)}</p>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
+import { setCookie, getCookie } from "../../utils/cookieUtils";
 import "./TrendingTVshows.css";
 
 export default function TrendingTVshows() {
@@ -42,6 +43,19 @@ export default function TrendingTVshows() {
 
   const formatVoteAverage = (vote) => {
     return vote ? vote.toFixed(1) : "N/A";
+  };
+
+  const watchlater = (tvShow) => {
+    const parsed = JSON.parse(getCookie("watchlater") || "[]");
+    const existingList = Array.isArray(parsed) ? parsed : [];
+    const isAlreadyAdded = existingList.find((item) => item.id === tvShow.id);
+    if (isAlreadyAdded) {
+      console.log(`${tvShow.name || "This show"} is already in your Watch Later list!`);
+      return;
+    }
+    const updatedList = [...existingList, tvShow];
+    setCookie("watchlater", JSON.stringify(updatedList), 7);
+    console.log(`${tvShow.name || "This show"} has been added to your Watch Later list!`);
   };
 
   return (
@@ -132,10 +146,14 @@ export default function TrendingTVshows() {
                   }}>
                     View Details →
                   </button>
-                  <button className="media-cta" type="button" onClick={() => {
-
-                  }
-                  }>
+                  <button
+                    className="media-cta"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      watchlater(tvShow);
+                    }}
+                  >
                     Watch Later
                   </button>
                 </div>

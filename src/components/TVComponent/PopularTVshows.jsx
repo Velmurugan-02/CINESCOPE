@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { tmdbRequest } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
+import { setCookie, getCookie } from "../../utils/cookieUtils";
 import "./PopularTVshows.css";
 
 export default function PopularTVshows() {
@@ -38,6 +39,19 @@ export default function PopularTVshows() {
   }, []);
 
   const visible = tvShows.slice(0, 10);
+
+  const watchlater = (tvShow) => {
+    const parsed = JSON.parse(getCookie("watchlater") || "[]");
+    const existingList = Array.isArray(parsed) ? parsed : [];
+    const isAlreadyAdded = existingList.find((item) => item.id === tvShow.id);
+    if (isAlreadyAdded) {
+      console.log(`${tvShow.name || "This show"} is already in your Watch Later list!`);
+      return;
+    }
+    const updatedList = [...existingList, tvShow];
+    setCookie("watchlater", JSON.stringify(updatedList), 7);
+    console.log(`${tvShow.name || "This show"} has been added to your Watch Later list!`);
+  };
 
   return (
     <section className="popular-tv-section">
@@ -104,6 +118,13 @@ export default function PopularTVshows() {
                       navigate(`/tv/${tvShow.id}`)
                     }}>
                       View details
+                    </button>
+                    <button
+                      className="media-cta"
+                      type="button"
+                      onClick={() => watchlater(tvShow)}
+                    >
+                      Watch Later
                     </button>
                   </div>
                 </div>

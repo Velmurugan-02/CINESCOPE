@@ -1,8 +1,4 @@
-/* =========================================
-   IntroComponent.css — CineScope Hero
-   ========================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 /* ===== Section shell ===== */
 .intro {
@@ -16,7 +12,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 /* ===== Ambient colour orbs ===== */
@@ -75,7 +71,7 @@
   width: 100%;
   max-width: 860px;
   margin: 0 auto;
-  padding: 5rem 2rem 4rem;
+  padding: 1rem 2rem 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,15 +150,38 @@
   animation: fadeSlideDown 0.8s 0.2s ease both;
 }
 
-.intro_divider_line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 184, 108, 0.4), transparent);
+/* ===== Stats Section ===== */
+.intro_stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  animation: fadeSlideDown 0.9s 0.3s ease both;
 }
 
-.intro_divider_icon {
-  font-size: 1.3rem;
-  filter: drop-shadow(0 0 8px rgba(255, 184, 108, 0.5));
+.intro_stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.intro_stat_value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffb86c;
+}
+
+.intro_stat_label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.2rem;
 }
 
 /* ===== Feature chips ===== */
@@ -172,7 +191,7 @@
   justify-content: center;
   gap: 0.6rem;
   max-width: 700px;
-  margin-bottom: 2.4rem;
+  margin-bottom: 1.4rem;
   animation: fadeSlideDown 0.95s 0.42s ease both;
 }
 
@@ -204,7 +223,7 @@
   font-weight: 500;
   color: rgba(255, 255, 255, 0.45);
   letter-spacing: 0.02em;
-  margin-bottom: 2.8rem;
+  margin-bottom: 0.8rem;
   animation: fadeSlideDown 1s 0.5s ease both;
 }
 
@@ -287,26 +306,12 @@
   .intro_stats {
     flex-wrap: wrap;
     border-radius: 14px;
+    gap: 1rem;
   }
 
   .intro_stat {
-    flex: calc(50% - 1px);
+    flex: calc(50% - 1rem);
     min-width: 120px;
-    border-right: 1px solid rgba(255, 255, 255, 0.07);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  }
-
-  .intro_stat:nth-child(2) {
-    border-right: none;
-  }
-
-  .intro_stat:nth-child(3) {
-    border-bottom: none;
-  }
-
-  .intro_stat:nth-child(4) {
-    border-right: none;
-    border-bottom: none;
   }
 
   .intro_orb--amber {
@@ -344,7 +349,6 @@
   .intro_badge,
   .intro_title,
   .intro_para,
-  .intro_divider,
   .intro_stats,
   .intro_chips,
   .intro_tagline,
