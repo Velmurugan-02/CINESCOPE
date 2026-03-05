@@ -27,7 +27,7 @@ const MovieDetails = () => {
           getMovieWatchProviders(id)
         ]);
         setMovie(movieData);
-        setCast(creditData.cast.slice(0, 15));
+        setCast(creditData.cast);
         setWatchProviders(providerData);
       } catch (err) {
         setError("Failed to load movie.");

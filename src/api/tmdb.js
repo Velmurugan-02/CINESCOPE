@@ -88,6 +88,8 @@ export const getMovieCredits = (id) => tmdbRequest(`/movie/${id}/credits`);
 
 export const getTVCredits = (id) => tmdbRequest(`/tv/${id}/credits`);
 
+export const getTVAggregateCredits = (id) => tmdbRequest(`/tv/${id}/aggregate_credits`);
+
 export const getMovieWatchProviders = (id) => tmdbRequest(`/movie/${id}/watch/providers`);
 
 export const getTVWatchProviders = (id) => tmdbRequest(`/tv/${id}/watch/providers`);

@@ -40,19 +40,16 @@
     padding: 0.5rem 0.5rem 1.5rem;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    /* Firefox */
 }
 
 .cast-scroll-container::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, Edge */
 }
 
 /* Nav Buttons */
 .carousel-nav-btn {
     position: absolute;
     top: 60px;
-    /* Center with avatar */
     transform: translateY(-50%);
     width: 45px;
     height: 45px;
@@ -69,7 +66,6 @@
     z-index: 10;
     transition: all 0.3s ease;
     opacity: 0;
-    /* Hidden by default, shown on container hover */
 }
 
 .carousel-relative-container:hover .carousel-nav-btn {
@@ -93,7 +89,6 @@
 @media (max-width: 768px) {
     .carousel-nav-btn {
         display: none;
-        /* Hide arrows on mobile, use touch scroll */
     }
 
     .cast-scroll-container {

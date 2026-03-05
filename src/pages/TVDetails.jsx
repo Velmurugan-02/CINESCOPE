@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getTVDetails, getTVVideos, getTVCredits, getTVWatchProviders } from "../api/tmdb";
 import GlassSpinner from "../components/GlassSpinner";
 import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
-import CastCarousel from "../components/MoviesDetailsComponent/CastCarousel";
+import CastCarousel from "../components/TVDetailsComponent/CastCarousel";
 import WatchProviders from "../components/MoviesDetailsComponent/WatchProviders";
 import "./TVDetails.css";
 
@@ -27,7 +27,7 @@ const TVDetails = () => {
                     getTVWatchProviders(id)
                 ]);
                 setTv(data);
-                setCast(creditData.cast.slice(0, 15));
+                setCast(creditData.cast);
                 setWatchProviders(providerData);
             } catch (err) {
                 setError("Failed to load series details.");
@@ -105,8 +105,6 @@ const TVDetails = () => {
                             <span className="meta-chip status">{tv.status}</span>
                         </div>
 
-                        <WatchProviders providers={watchProviders} />
-
                         <div className="movie-overview-section">
                             <h3>Overview</h3>
                             <p className="movie-overview">{tv.overview}</p>
@@ -130,6 +128,7 @@ const TVDetails = () => {
                                 <span className="info-value">{tv.original_language?.toUpperCase()}</span>
                             </div>
                         </div>
+                        <WatchProviders providers={watchProviders} />
                     </div>
                 </div>
             </div>

@@ -33,9 +33,7 @@ export default function CastCarousel({ cast, title }) {
         const container = scrollContainerRef.current;
         if (container) {
             container.addEventListener("scroll", checkScrollButtons);
-            // Initial check
             checkScrollButtons();
-            // Handle window resize
             window.addEventListener("resize", checkScrollButtons);
         }
         return () => {
