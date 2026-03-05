@@ -27,52 +27,43 @@ export default function Genre() {
         fetchGenres();
     }, []);
 
-    if (loading) {
-        return (
-            <section className="genre-section">
-                <div className="genre-header">
-                    <h2 className="genre-title">
-                        Movie <span className="genre-title-accent">Genres</span>
-                    </h2>
-                </div>
-                <div className="genre-loading-grid">
-                    {Array.from({ length: 12 }).map((_, i) => (
-                        <div key={i} className="genre-skeleton" />
-                    ))}
-                </div>
-            </section>
-        );
-    }
-
-    if (error) {
-        return (
-            <section className="genre-section">
-                <div className="genre-error">
-                    <p>⚠️ {error}</p>
-                </div>
-            </section>
-        );
-    }
-
     return (
         <section className="genre-section">
-            <div className="genre-header">
-                <h2 className="genre-title">
-                    Movie <span className="genre-title-accent">Genres</span>
-                </h2>
+            <div className="section-header">
+                <div className="header-left">
+                    <h2 className="section-title">Movie Genres</h2>
+                    <span className="section-badge">Explore</span>
+                </div>
+                <p className="section-subtitle">Find your favorite categories</p>
             </div>
 
-            <div className="genre-grid">
-                {genres.map((genre) => (
-                    <button
-                        key={genre.id}
-                        className="genre-pill"
-                        onClick={() => navigate(`/genre/movie/list/${genre.id}`)}
-                    >
-                        <span className="genre-pill-name">{genre.name}</span>
-                    </button>
-                ))}
-            </div>
+            {loading && (
+                <div className="genre-grid">
+                    {Array.from({ length: 12 }).map((_, i) => (
+                        <div key={i} className="genre-skeleton-pill" />
+                    ))}
+                </div>
+            )}
+
+            {error && (
+                <div className="genre-error-box">
+                    <p>⚠️ {error}</p>
+                </div>
+            )}
+
+            {!loading && !error && (
+                <div className="genre-grid">
+                    {genres.map((genre) => (
+                        <button
+                            key={genre.id}
+                            className="genre-pill"
+                            onClick={() => navigate(`/genre/movie/list/${genre.id}`)}
+                        >
+                            <span className="genre-name">{genre.name}</span>
+                        </button>
+                    ))}
+                </div>
+            )}
         </section>
     );
 }
