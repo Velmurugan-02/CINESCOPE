@@ -7,6 +7,7 @@ import "./NowPlayingTVshows.css";
 export default function NowPlaying() {
   const navigate = useNavigate();
   const [tv, setTv] = useState([]);
+  const [watchlater, setWatchlater] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -28,6 +29,8 @@ export default function NowPlaying() {
         results.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
 
         setTv(results);
+        const saved = JSON.parse(getCookie("watchlater_tv") || "[]");
+        setWatchlater(saved);
       } catch (err) {
         setIsError(true);
         console.error("Error fetching airing today tv shows:", err);
@@ -41,18 +44,22 @@ export default function NowPlaying() {
 
   const visible = useMemo(() => tv.slice(0, 10), [tv]);
 
-  const watchlater = (tvShow) => {
-    const parsed = JSON.parse(getCookie("watchlater") || "[]");
-    const existingList = Array.isArray(parsed) ? parsed : [];
-    const isAlreadyAdded = existingList.find((item) => item.id === tvShow.id);
-    if (isAlreadyAdded) {
-      console.log(`${tvShow.name || "This show"} is already in your Watch Later list!`);
-      return;
+  const toggleWatchLater = (e, tvShow) => {
+    e.stopPropagation();
+    let updatedList;
+    const exists = watchlater.find((m) => m.id === tvShow.id);
+
+    if (exists) {
+      updatedList = watchlater.filter((m) => m.id !== tvShow.id);
+    } else {
+      updatedList = [...watchlater, tvShow];
     }
-    const updatedList = [...existingList, tvShow];
-    setCookie("watchlater", JSON.stringify(updatedList), 7);
-    console.log(`${tvShow.name || "This show"} has been added to your Watch Later list!`);
+
+    setWatchlater(updatedList);
+    setCookie("watchlater_tv", JSON.stringify(updatedList), 7);
   };
+
+  const isInWatchLater = (showId) => watchlater.some((m) => m.id === showId);
 
   return (
     <section className="airing-today-section">
@@ -122,11 +129,15 @@ export default function NowPlaying() {
                       View details
                     </button>
                     <button
-                      className="media-cta"
+                      className={`media-cta ${isInWatchLater(tv.id) ? "active" : ""}`}
                       type="button"
-                      onClick={() => watchlater(tv)}
+                      onClick={(e) => toggleWatchLater(e, tv)}
+                      style={{
+                        background: isInWatchLater(tv.id) ? "var(--primary)" : "rgba(255,255,255,0.1)",
+                        color: "white"
+                      }}
                     >
-                      Watch Later
+                      {isInWatchLater(tv.id) ? "✓ Added" : "+ Watch Later"}
                     </button>
                   </div>
                 </div>

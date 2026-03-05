@@ -97,6 +97,32 @@
     }
 }
 
+.more-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.more-genres-btn {
+    background: rgba(114, 16, 211, 0.1);
+    border: 1px solid rgba(114, 16, 211, 0.3);
+    color: var(--primary);
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.more-genres-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(114, 16, 211, 0.3);
+}
+
 @media (max-width: 768px) {
     .genre-grid {
         grid-template-columns: repeat(2, 1fr);

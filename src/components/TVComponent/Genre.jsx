@@ -6,6 +6,7 @@ import "./Genre.css";
 export default function Genre() {
     const navigate = useNavigate();
     const [genres, setGenres] = useState([]);
+    const [showAll, setShowAll] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -26,6 +27,8 @@ export default function Genre() {
         fetchGenres();
     }, []);
 
+    const displayedGenres = showAll ? genres : genres.slice(0, 10);
+
     return (
         <section className="genre-section">
             <div className="section-header">
@@ -38,7 +41,7 @@ export default function Genre() {
 
             {loading && (
                 <div className="genre-grid">
-                    {Array.from({ length: 12 }).map((_, i) => (
+                    {Array.from({ length: 10 }).map((_, i) => (
                         <div key={i} className="genre-skeleton-pill" />
                     ))}
                 </div>
@@ -51,17 +54,30 @@ export default function Genre() {
             )}
 
             {!loading && !error && (
-                <div className="genre-grid">
-                    {genres.map((genre) => (
-                        <button
-                            key={genre.id}
-                            className="genre-pill"
-                            onClick={() => navigate(`/genre/tv/list/${genre.id}`)}
-                        >
-                            <span className="genre-name">{genre.name}</span>
-                        </button>
-                    ))}
-                </div>
+                <>
+                    <div className="genre-grid">
+                        {displayedGenres.map((genre) => (
+                            <button
+                                key={genre.id}
+                                className="genre-pill"
+                                onClick={() => navigate(`/genre/tv/list/${genre.id}`)}
+                            >
+                                <span className="genre-name">{genre.name}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {genres.length > 10 && (
+                        <div className="more-btn-container">
+                            <button
+                                className="more-genres-btn"
+                                onClick={() => setShowAll(!showAll)}
+                            >
+                                {showAll ? "Show Less" : `+ More (${genres.length - 10})`}
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
         </section>
     );

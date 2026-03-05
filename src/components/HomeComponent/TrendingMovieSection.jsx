@@ -6,6 +6,7 @@ import { setCookie, getCookie } from "../../utils/cookieUtils";
 
 export default function TrendingMovieSection() {
   const [trending, setTrending] = useState([]);
+  const [watchlater, setWatchlater] = useState([]);
   const [timeWindow, setTimeWindow] = useState("week");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -22,6 +23,10 @@ export default function TrendingMovieSection() {
         setIsError(false);
         const data = await tmdbRequest(`/trending/movie/${timeWindow}`);
         setTrending(data.results || []);
+
+        // Load watchlater from cookies
+        const saved = JSON.parse(getCookie("watchlater_movies") || "[]");
+        setWatchlater(saved);
       } catch (err) {
         setIsError(true);
         console.error("Error fetching trending movies:", err);
@@ -45,18 +50,22 @@ export default function TrendingMovieSection() {
     return vote ? vote.toFixed(1) : "N/A";
   };
 
-  const watchlater = (movie) => {
-    const parsed = JSON.parse(getCookie("watchlater") || "[]");
-    const existingList = Array.isArray(parsed) ? parsed : [];
-    const isAlreadyAdded = existingList.find((item) => item.id === movie.id);
-    if (isAlreadyAdded) {
-      console.log(`${movie.title} is already in your Watch Later list!`);
-      return;
+  const toggleWatchLater = (e, movie) => {
+    e.stopPropagation();
+    let updatedList;
+    const exists = watchlater.find((m) => m.id === movie.id);
+
+    if (exists) {
+      updatedList = watchlater.filter((m) => m.id !== movie.id);
+    } else {
+      updatedList = [...watchlater, movie];
     }
-    const updatedList = [...existingList, movie];
-    setCookie("watchlater", JSON.stringify(updatedList), 7);
-    console.log(`${movie.title} has been added to your Watch Later list!`);
+
+    setWatchlater(updatedList);
+    setCookie("watchlater_movies", JSON.stringify(updatedList), 7);
   };
+
+  const isInWatchLater = (movieId) => watchlater.some((m) => m.id === movieId);
 
   return (
     <section className="movies-trending-section">
@@ -146,11 +155,16 @@ export default function TrendingMovieSection() {
                   }}>
                     View Details →
                   </button>
-                  <button className="media-cta" type="button" onClick={(e) => {
-                    e.stopPropagation();
-                    watchlater(movie);
-                  }}>
-                    Watch Later
+                  <button
+                    className={`media-cta ${isInWatchLater(movie.id) ? "active" : ""}`}
+                    type="button"
+                    onClick={(e) => toggleWatchLater(e, movie)}
+                    style={{
+                      background: isInWatchLater(movie.id) ? "var(--primary)" : "rgba(255,255,255,0.1)",
+                      color: "white"
+                    }}
+                  >
+                    {isInWatchLater(movie.id) ? "✓ Added" : "+ Watch Later"}
                   </button>
                 </div>
               </div>

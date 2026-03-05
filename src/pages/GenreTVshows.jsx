@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { tmdbRequest } from "../api/tmdb";
+import { getCookie, setCookie } from "../utils/cookieUtils";
 // import "../components/MoviesComponent/PopularMoviesSection.css";
 
 const formatVoteAverage = (v) => (typeof v === "number" ? v.toFixed(1) : "NA");
@@ -11,6 +12,7 @@ export default function GenreTVshows() {
     const navigate = useNavigate();
 
     const [tvShows, setTvShows] = useState([]);
+    const [watchlater, setWatchlater] = useState([]);
     const [genreName, setGenreName] = useState("Genre");
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -41,6 +43,10 @@ export default function GenreTVshows() {
                 });
                 setTvShows(res?.results || []);
                 setTotalPages(Math.min(res?.total_pages || 1, 500));
+
+                // Load watchlater from cookies
+                const saved = JSON.parse(getCookie("watchlater_tv") || "[]");
+                setWatchlater(saved);
             } catch (err) {
                 console.error("Error fetching genre TV shows:", err);
                 setIsError(true);
@@ -50,6 +56,23 @@ export default function GenreTVshows() {
         };
         fetchTVShows();
     }, [id, page]);
+
+    const toggleWatchLater = (e, show) => {
+        e.stopPropagation();
+        let updatedList;
+        const exists = watchlater.find((m) => m.id === show.id);
+
+        if (exists) {
+            updatedList = watchlater.filter((m) => m.id !== show.id);
+        } else {
+            updatedList = [...watchlater, show];
+        }
+
+        setWatchlater(updatedList);
+        setCookie("watchlater_tv", JSON.stringify(updatedList), 7);
+    };
+
+    const isInWatchLater = (showId) => watchlater.some((m) => m.id === showId);
 
     return (
         <section className="home-section" style={{ minHeight: "80vh" }}>
@@ -126,13 +149,28 @@ export default function GenreTVshows() {
                                                 <span>Votes: {votes}</span>
                                                 <span>Pop: {Math.round(popularity)}</span>
                                             </div>
-                                            <button
-                                                className="media-cta"
-                                                type="button"
-                                                onClick={() => navigate(`/tv/${tvShow.id}`)}
-                                            >
-                                                View details
-                                            </button>
+                                            <div className="overlay-actions" style={{ display: "flex", gap: "0.5rem", width: "100%" }}>
+                                                <button
+                                                    className="media-cta"
+                                                    type="button"
+                                                    onClick={() => navigate(`/tv/${tvShow.id}`)}
+                                                    style={{ flex: 1 }}
+                                                >
+                                                    View detail
+                                                </button>
+                                                <button
+                                                    className={`media-cta ${isInWatchLater(tvShow.id) ? "active" : ""}`}
+                                                    type="button"
+                                                    onClick={(e) => toggleWatchLater(e, tvShow)}
+                                                    style={{
+                                                        flex: 1,
+                                                        background: isInWatchLater(tvShow.id) ? "var(--primary)" : "rgba(255,255,255,0.1)",
+                                                        color: "white"
+                                                    }}
+                                                >
+                                                    {isInWatchLater(tvShow.id) ? "✓ Added" : "+ Watch"}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 

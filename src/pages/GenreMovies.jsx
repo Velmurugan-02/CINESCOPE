@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { tmdbRequest } from "../api/tmdb";
+import { getCookie, setCookie } from "../utils/cookieUtils";
 import "../components/MoviesComponent/PopularMoviesSection.css";
 
 const formatVoteAverage = (v) => (typeof v === "number" ? v.toFixed(1) : "NA");
@@ -11,6 +12,7 @@ export default function GenreMovies() {
     const navigate = useNavigate();
 
     const [movies, setMovies] = useState([]);
+    const [watchlater, setWatchlater] = useState([]);
     const [genreName, setGenreName] = useState("Genre");
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -41,6 +43,10 @@ export default function GenreMovies() {
                 });
                 setMovies(res?.results || []);
                 setTotalPages(Math.min(res?.total_pages || 1, 500));
+
+                // Load watchlater from cookies
+                const saved = JSON.parse(getCookie("watchlater_movies") || "[]");
+                setWatchlater(saved);
             } catch (err) {
                 console.error("Error fetching genre movies:", err);
                 setIsError(true);
@@ -50,6 +56,23 @@ export default function GenreMovies() {
         };
         fetchMovies();
     }, [id, page]);
+
+    const toggleWatchLater = (e, movie) => {
+        e.stopPropagation();
+        let updatedList;
+        const exists = watchlater.find((m) => m.id === movie.id);
+
+        if (exists) {
+            updatedList = watchlater.filter((m) => m.id !== movie.id);
+        } else {
+            updatedList = [...watchlater, movie];
+        }
+
+        setWatchlater(updatedList);
+        setCookie("watchlater_movies", JSON.stringify(updatedList), 7);
+    };
+
+    const isInWatchLater = (movieId) => watchlater.some((m) => m.id === movieId);
 
     return (
         <section className="home-section" style={{ minHeight: "80vh" }}>
@@ -126,13 +149,28 @@ export default function GenreMovies() {
                                                 <span>Votes: {votes}</span>
                                                 <span>Pop: {Math.round(popularity)}</span>
                                             </div>
-                                            <button
-                                                className="media-cta"
-                                                type="button"
-                                                onClick={() => navigate(`/movie/${movie.id}`)}
-                                            >
-                                                View details
-                                            </button>
+                                            <div className="overlay-actions" style={{ display: "flex", gap: "0.5rem", width: "100%" }}>
+                                                <button
+                                                    className="media-cta"
+                                                    type="button"
+                                                    onClick={() => navigate(`/movie/${movie.id}`)}
+                                                    style={{ flex: 1 }}
+                                                >
+                                                    View detail
+                                                </button>
+                                                <button
+                                                    className={`media-cta ${isInWatchLater(movie.id) ? "active" : ""}`}
+                                                    type="button"
+                                                    onClick={(e) => toggleWatchLater(e, movie)}
+                                                    style={{
+                                                        flex: 1,
+                                                        background: isInWatchLater(movie.id) ? "var(--primary)" : "rgba(255,255,255,0.1)",
+                                                        color: "white"
+                                                    }}
+                                                >
+                                                    {isInWatchLater(movie.id) ? "✓ Added" : "+ Watch"}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
