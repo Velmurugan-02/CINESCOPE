@@ -1,9 +1,18 @@
-.btn_close{
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--primary-color, #7210D3);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    padding: 0;
+@import "./MovieDetails.css";
+
+.person-details-page .movie-backdrop {
+    filter: blur(40px) brightness(0.4);
+    transform: scale(1.1);
+}
+
+.person-details-page .meta-chip.birthday,
+.person-details-page .meta-chip.deathday {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.3);
+    color: #ff8e8e;
+}
+
+.person-details-page .movie-overview {
+    white-space: pre-wrap;
+    line-height: 1.8;
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { tmdbRequest } from "../../api/tmdb";
+import { getTrendingPeople } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
 import "./TrendingPeople.css";
 
@@ -19,7 +19,7 @@ export default function TrendingPeople() {
       try {
         setIsLoading(true);
         setIsError(false);
-        const data = await tmdbRequest(`/trending/person/${timeWindow}`);
+        const data = await getTrendingPeople(timeWindow);
         setTrending(data.results || []);
       } catch (err) {
         setIsError(true);
@@ -30,19 +30,6 @@ export default function TrendingPeople() {
     };
     fetchTrending();
   }, [timeWindow]);
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  const formatVoteAverage = (vote) => {
-    return vote ? vote.toFixed(1) : "N/A";
-  };
 
   return (
     <section className="trending-people-section">
@@ -76,63 +63,61 @@ export default function TrendingPeople() {
         )}
 
         {!isLoading && !isError && (
-          <div className="people-grid">
+          <div className="people-grid results-grid">
             {trending.slice(0, 10).map((person, index) => {
               const knownFor = (person.known_for || [])
-                .map((item) => {
-                  const title = item.title || item.name || item.original_title || item.original_name;
-                  if (!title) return null;
-                  const type = item.media_type === "tv" ? "TV" : "Movie";
-                  return `${title} (${type})`;
-                })
+                .map((item) => item.title || item.name)
                 .filter(Boolean)
                 .join(", ");
 
               return (
-                <article
-                  className="person-card"
-                  key={person.id}
-                  onClick={() => navigate(`/person/${person.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="person-poster">
+                <div key={person.id} className="result-card person-card">
+                  <div className="card-image-wrapper">
                     {person.profile_path ? (
                       <img
-                        src={`https://image.tmdb.org/t/p/w300${person.profile_path}`}
+                        src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
                         alt={person.name}
-                        className="poster-image"
+                        className="card-image"
                         loading="lazy"
                       />
                     ) : (
-                      <div className="no-poster">
-                        <span>No Image Available</span>
+                      <div className="no-image">
+                        <span>👤</span>
                       </div>
                     )}
-                    <div className="person-popularity">
-                      📈 {Math.round(person.popularity)}
-                    </div>
-                    {index < 3 && <div className="top-ranked">#{index + 1}</div>}
-                  </div>
-
-                  <div className="person-info">
-                    <h3 className="person-title">{person.name}</h3>
-                    <div className="person-meta">
-                      <span className="department">{person.known_for_department}</span>
-                      <span className={`adult-badge ${person.adult ? "adult" : "everyone"}`}>
-                        {person.adult ? "18+" : "ALL"}
+                    <div className="card-badges">
+                      {index < 3 && (
+                        <span className="rank-badge">#{index + 1}</span>
+                      )}
+                      <span className="rating-badge">
+                        📈 {Math.round(person.popularity)}
                       </span>
                     </div>
-                    <p className="person-overview" title={knownFor || "No specific works listed"}>
-                      {knownFor ? `Known for: ${knownFor}` : `Focus: ${person.known_for_department || "Entertainment"}`}
-                    </p>
-                    <button className="details-button" onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/person/${person.id}`);
-                    }}>
-                      View Profile →
+                  </div>
+
+                  <div className="card-content">
+                    <div className="card-main-info">
+                      <h3 className="card-title">{person.name}</h3>
+                    </div>
+
+                    <p className="card-subtitle">{person.known_for_department}</p>
+
+                    {knownFor && (
+                      <p className="card-overview">
+                        Known for: {knownFor}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="card-footer">
+                    <button
+                      className="view-details-btn"
+                      onClick={() => navigate(`/person/${person.id}`)}
+                    >
+                      View Profile
                     </button>
                   </div>
-                </article>
+                </div>
               );
             })}
           </div>

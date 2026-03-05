@@ -1,16 +1,16 @@
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-
-import { searchMulti } from "../api/tmdb";
+import { searchMulti, searchMovie, searchTV, searchPerson } from "../api/tmdb";
 import SkeletonCard from "../components/SkeletonCard";
 import ErrorState from "../components/ErrorState";
-import "./Search.css"; // Import the CSS file
+import "./Search.css";
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const q = searchParams.get("q") || "";
+  const type = searchParams.get("type") || "all";
   const page = Number(searchParams.get("page") || "1");
 
   // Input is controlled, synced with URL
@@ -22,7 +22,7 @@ export default function Search() {
 
   const enabled = q.trim().length > 0;
 
-  const queryKey = useMemo(() => ["search", q.trim(), page], [q, page]);
+  const queryKey = useMemo(() => ["search", q.trim(), type, page], [q, type, page]);
 
   const {
     data,
@@ -33,7 +33,13 @@ export default function Search() {
     isFetching,
   } = useQuery({
     queryKey,
-    queryFn: () => searchMulti(q.trim(), page),
+    queryFn: () => {
+      const query = q.trim();
+      if (type === "movie") return searchMovie(query, page);
+      if (type === "tv") return searchTV(query, page);
+      if (type === "person") return searchPerson(query, page);
+      return searchMulti(query, page);
+    },
     enabled,
     keepPreviousData: true,
   });
@@ -45,18 +51,18 @@ export default function Search() {
       setSearchParams({});
       return;
     }
-    setSearchParams({ q: value, page: "1" });
+    setSearchParams({ q: value, type, page: "1" });
   }
 
   function goToPage(nextPage) {
-    setSearchParams({ q: q.trim(), page: String(nextPage) });
+    setSearchParams({ q: q.trim(), type, page: String(nextPage) });
   }
 
   const results = data?.results || [];
   const totalPages = data?.total_pages || 1;
 
   const getMediaIcon = (mediaType) => {
-    switch(mediaType) {
+    switch (mediaType) {
       case 'movie': return '🎬';
       case 'tv': return '📺';
       case 'person': return '👤';
@@ -67,7 +73,7 @@ export default function Search() {
   return (
     <div className="search-page">
       {/* Search Form */}
-      <form onSubmit={onSubmit} className="search-form">
+      {/* <form onSubmit={onSubmit} className="search-form">
         <div className="search-input-wrapper">
           <input
             type="text"
@@ -80,10 +86,10 @@ export default function Search() {
             Search
           </button>
         </div>
-      </form>
+      </form> */}
 
       {/* Status Bar */}
-      <div className="search-status">
+      {/* <div className="search-status">
         {enabled ? (
           <span className="status-text">
             Query: <strong>"{q}"</strong> 
@@ -92,7 +98,7 @@ export default function Search() {
         ) : (
           <span className="status-text">Type something and hit Search to discover content.</span>
         )}
-      </div>
+      </div> */}
 
       {/* Results Section */}
       <div className="search-results">
@@ -118,42 +124,59 @@ export default function Search() {
           <>
             <div className="results-grid">
               {results.map((item) => {
-                const mediaType = item.media_type;
+                const mediaType = item.media_type || (type !== 'all' ? type : null);
                 const id = item.id;
                 const title = item.title || item.name || item.original_name || "Untitled";
                 const releaseDate = item.release_date || item.first_air_date;
                 const year = releaseDate ? new Date(releaseDate).getFullYear() : '';
                 const rating = item.vote_average ? (item.vote_average * 10).toFixed(0) : null;
-                
+
+                // Image handling
+                const imagePath = item.poster_path || item.profile_path;
+                const imageUrl = imagePath
+                  ? `https://image.tmdb.org/t/p/w500${imagePath}`
+                  : null;
+
                 const href = mediaType === "movie"
                   ? `/movie/${id}`
                   : mediaType === "tv"
-                  ? `/tv/${id}`
-                  : mediaType === "person"
-                  ? `/person/${id}`
-                  : null;
+                    ? `/tv/${id}`
+                    : mediaType === "person"
+                      ? `/person/${id}`
+                      : null;
 
                 return (
                   <div key={`${mediaType}-${id}`} className="result-card">
-                    <div className="card-header">
-                      <span className="media-type-badge">
-                        {getMediaIcon(mediaType)} {mediaType?.toUpperCase()}
-                      </span>
-                      {rating && (
-                        <span className="rating-badge" style={{ 
-                          color: rating >= 70 ? 'var(--success)' : rating >= 50 ? 'var(--gold)' : 'inherit'
-                        }}>
-                          ★ {rating}%
-                        </span>
+                    <div className="card-image-wrapper">
+                      {imageUrl ? (
+                        <img src={imageUrl} alt={title} className="card-image" loading="lazy" />
+                      ) : (
+                        <div className="no-image">
+                          <span>{getMediaIcon(mediaType)}</span>
+                        </div>
                       )}
+                      <div className="card-badges">
+                        <span className="media-type-badge">
+                          {getMediaIcon(mediaType)} {mediaType?.toUpperCase()}
+                        </span>
+                        {rating && (
+                          <span className="rating-badge" style={{
+                            color: rating >= 70 ? '#4caf50' : rating >= 50 ? '#ffc107' : '#f44336'
+                          }}>
+                            ★ {rating}%
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    
+
                     <div className="card-content">
-                      <h3 className="card-title">{title}</h3>
-                      {year && <span className="card-year">{year}</span>}
-                      
+                      <div className="card-main-info">
+                        <h3 className="card-title">{title}</h3>
+                        {year && <span className="card-year">{year}</span>}
+                      </div>
+
                       {item.character && (
-                        <p className="card-subtitle">as {item.character}</p>
+                        <p className="card-subtitle">as <strong>{item.character}</strong></p>
                       )}
                       {item.job && (
                         <p className="card-subtitle">{item.job}</p>
@@ -161,12 +184,20 @@ export default function Search() {
                       {item.known_for_department && (
                         <p className="card-subtitle">{item.known_for_department}</p>
                       )}
+
+                      {item.overview && (
+                        <p className="card-overview">
+                          {item.overview.length > 100
+                            ? `${item.overview.substring(0, 100)}...`
+                            : item.overview}
+                        </p>
+                      )}
                     </div>
 
                     {href && (
                       <div className="card-footer">
-                        <Link to={href} className="view-details-link">
-                          View Details →
+                        <Link to={href} className="view-details-btn">
+                          View Details
                         </Link>
                       </div>
                     )}
@@ -177,29 +208,34 @@ export default function Search() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="pagination">
-                <button
-                  className="pagination-btn"
-                  disabled={page <= 1}
-                  onClick={() => goToPage(page - 1)}
-                >
-                  ← Previous
-                </button>
-                
-                <div className="pagination-info">
-                  <span>Page </span>
-                  <strong>{page}</strong>
-                  <span> of </span>
-                  <strong>{Math.min(totalPages, 500)}</strong>
+              <div className="pagination-wrapper">
+                <div className="pagination">
+                  <button
+                    className="pagination-btn prev"
+                    disabled={page <= 1}
+                    onClick={() => goToPage(page - 1)}
+                    aria-label="Previous Page"
+                  >
+                    <span className="btn-icon">←</span>
+                    <span className="btn-text">Previous</span>
+                  </button>
+
+                  <div className="pagination-info">
+                    <span className="current-page">{page}</span>
+                    <span className="page-separator">of</span>
+                    <span className="total-pages">{Math.min(totalPages, 500)}</span>
+                  </div>
+
+                  <button
+                    className="pagination-btn next"
+                    disabled={page >= totalPages}
+                    onClick={() => goToPage(page + 1)}
+                    aria-label="Next Page"
+                  >
+                    <span className="btn-text">Next</span>
+                    <span className="btn-icon">→</span>
+                  </button>
                 </div>
-                
-                <button
-                  className="pagination-btn"
-                  disabled={page >= totalPages}
-                  onClick={() => goToPage(page + 1)}
-                >
-                  Next →
-                </button>
               </div>
             )}
           </>

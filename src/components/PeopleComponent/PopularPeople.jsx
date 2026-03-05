@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { tmdbRequest } from "../../api/tmdb";
+import { getPopularPeople } from "../../api/tmdb";
 import { useNavigate } from "react-router-dom";
 import "./PopularPeople.css";
 
@@ -9,22 +9,12 @@ export default function PopularPeople() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const formatVoteAverage = (v) => (typeof v === "number" ? v.toFixed(1) : "NA");
-  const getYear = (dateStr) => (dateStr ? dateStr.slice(0, 4) : "----");
-
   useEffect(() => {
     const fetchPopularPeople = async () => {
       try {
         setIsLoading(true);
         setIsError(false);
-
-        const res = await tmdbRequest("/person/popular", {
-          with_original_language: "en",
-          sort_by: "popularity.desc",
-          include_adult: false,
-          page: 1,
-        });
-
+        const res = await getPopularPeople();
         setPeople(res?.results || []);
       } catch (err) {
         setIsError(true);
@@ -42,8 +32,11 @@ export default function PopularPeople() {
   return (
     <section className="popular-people-section">
       <div className="popular-people-header">
-        <h2 className="section-title">Popular People</h2>
-        <p className="section-subtitle">Top picks based on popularity</p>
+        <div className="header-left">
+          <h2 className="section-title">Popular People</h2>
+          <span className="section-badge">Top Picks</span>
+        </div>
+        <p className="section-subtitle">Based on community interest</p>
       </div>
 
       {isLoading && (
@@ -60,64 +53,61 @@ export default function PopularPeople() {
       )}
 
       {!isLoading && !isError && (
-        <div className="card-grid">
+        <div className="card-grid results-grid">
           {visible.map((person, index) => {
-            const title = person.name || person.original_name || "Untitled";
-            const year = getYear(person.birthday || person.known_for_department || "");
-            const lang = (person.original_language || "").toUpperCase();
-            const rating = formatVoteAverage(person.vote_average);
-            const votes = person.vote_count ?? 0;
-            const popularity = person.popularity ?? 0;
-            const knownFor = person.known_for?.[0]?.title || person.known_for?.[0]?.name || "View details";
-            const overview = `${person.known_for_department || "Unknown"}\n${knownFor}\nPopularity: ${Math.round(popularity)}`;
-            const poster = person.profile_path
-              ? `https://image.tmdb.org/t/p/w300${person.profile_path}`
-              : null;
+            const knownFor = (person.known_for || [])
+              .map((item) => item.title || item.name)
+              .filter(Boolean)
+              .join(", ");
 
             return (
-              <article className="media-card" key={person.id}>
-                <div className="media-posterWrap">
-                  {poster ? (
-                    <img className="media-poster" src={poster} alt={title} loading="lazy" />
+              <div key={person.id} className="result-card person-card">
+                <div className="card-image-wrapper">
+                  {person.profile_path ? (
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
+                      alt={person.name}
+                      className="card-image"
+                      loading="lazy"
+                    />
                   ) : (
-                    <div className="media-noPoster">No Poster</div>
-                  )}
-
-                  {/* Standard badges: Rank/Lang on Left, Rating on Right */}
-                  {index < 3 ? (
-                    <div className="top-ranked">#{index + 1}</div>
-                  ) : (
-                    <div className="movie-lang">{lang || "EN"}</div>
-                  )}
-
-                  <div className="movie-rating">
-                    ⭐ {rating}
-                  </div>
-
-                  {/* hover overlay (uses overview + backdrop_path idea) */}
-                  <div className="media-overlay">
-                    <p className="media-overview">{overview}</p>
-                    <div className="media-stats">
-                      <span>Votes: {votes}</span>
-                      <span>Pop: {Math.round(popularity)}</span>
+                    <div className="no-image">
+                      <span>👤</span>
                     </div>
-                    <button className="media-cta" type="button" onClick={() => {
-                      navigate(`/person/${person.id}`)
-                    }}>
-                      View details
-                    </button>
+                  )}
+                  <div className="card-badges">
+                    {index < 3 && (
+                      <span className="rank-badge">#{index + 1}</span>
+                    )}
+                    <span className="rating-badge">
+                      📈 {Math.round(person.popularity)}
+                    </span>
                   </div>
                 </div>
 
-                <div className="media-info">
-                  <h3 className="media-title" title={title}>
-                    {title}
-                  </h3>
-                  <p className="media-meta">
-                    {year} • {votes.toLocaleString()} votes
-                  </p>
+                <div className="card-content">
+                  <div className="card-main-info">
+                    <h3 className="card-title">{person.name}</h3>
+                  </div>
+
+                  <p className="card-subtitle">{person.known_for_department}</p>
+
+                  {knownFor && (
+                    <p className="card-overview">
+                      Known for: {knownFor}
+                    </p>
+                  )}
                 </div>
-              </article>
+
+                <div className="card-footer">
+                  <button
+                    className="view-details-btn"
+                    onClick={() => navigate(`/person/${person.id}`)}
+                  >
+                    View Profile
+                  </button>
+                </div>
+              </div>
             );
           })}
         </div>

@@ -1,50 +1,75 @@
-/* PopularPeople.css - Person Specific Theme */
+/* PopularPeople.css - Premium People Theme */
+@import "../../pages/Search.css";
 
 .popular-people-section {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 1.5rem 1rem;
+    padding: 2rem 1.5rem;
 }
 
 .popular-people-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-left {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--border);
+    gap: 1.2rem;
+    margin-bottom: 0.5rem;
 }
 
 .section-title {
     font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text);
+    font-weight: 800;
     margin: 0;
+    color: var(--text);
+}
+
+.section-badge {
+    background: rgba(114, 16, 211, 0.1);
+    color: var(--primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .section-subtitle {
     margin: 0;
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1.25rem;
+/* Ensure the card grid matches the premium design */
+.card-grid.results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Rank Badge for popular section */
+.rank-badge {
+    padding: 0.4rem 0.7rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(114, 16, 211, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 768px) {
-    .card-grid {
+    .card-grid.results-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
 }
 
 @media (max-width: 480px) {
-    .popular-people-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+    .card-grid.results-grid {
+        grid-template-columns: 1fr;
     }
 }

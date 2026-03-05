@@ -47,6 +47,15 @@ export async function tmdbRequest(path, params = {}, options = {}) {
 export const searchMulti = (query, page = 1) =>
   tmdbRequest("/search/multi", { query, page, include_adult: false });
 
+export const searchMovie = (query, page = 1) =>
+  tmdbRequest("/search/movie", { query, page, include_adult: false });
+
+export const searchTV = (query, page = 1) =>
+  tmdbRequest("/search/tv", { query, page, include_adult: false });
+
+export const searchPerson = (query, page = 1) =>
+  tmdbRequest("/search/person", { query, page, include_adult: false });
+
 export const getMovieDetails = (id) => tmdbRequest(`/movie/${id}`);
 
 export const getTVDetails = (id) => tmdbRequest(`/tv/${id}`);
@@ -55,6 +64,9 @@ export const getPersonDetails = (id) => tmdbRequest(`/person/${id}`);
 
 export const getTrendingMovies = (timeWindow = "week", page = 1) =>
   tmdbRequest(`/trending/movie/${timeWindow}`, { page });
+
+export const getTrendingPeople = (timeWindow = "week", page = 1) =>
+  tmdbRequest(`/trending/person/${timeWindow}`, { page });
 
 export const getPopularMovies = (page = 1) =>
   tmdbRequest("/movie/popular", { page });
