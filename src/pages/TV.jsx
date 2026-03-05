@@ -5,9 +5,9 @@ import NowPlayingTVshows from "../components/TVComponent/NowPlayingTVshows";
 export default function TV() {
   return (
     <div className="tv-page">
-      <Genre />
       <PopularTVshows />
       <NowPlayingTVshows />
+      <Genre />
     </div>
   );
 }

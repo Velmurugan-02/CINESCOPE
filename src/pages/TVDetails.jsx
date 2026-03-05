@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getTVDetails } from "../api/tmdb";
+import { getTVDetails, getTVVideos, getTVCredits, getTVWatchProviders } from "../api/tmdb";
 import GlassSpinner from "../components/GlassSpinner";
+import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
+import CastCarousel from "../components/MoviesDetailsComponent/CastCarousel";
+import WatchProviders from "../components/MoviesDetailsComponent/WatchProviders";
 import "./TVDetails.css";
 
 const TVDetails = () => {
@@ -10,12 +13,22 @@ const TVDetails = () => {
     const [tv, setTv] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showTrailer, setShowTrailer] = useState(false);
+    const [trailerKey, setTrailerKey] = useState(null);
+    const [cast, setCast] = useState([]);
+    const [watchProviders, setWatchProviders] = useState(null);
 
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await getTVDetails(id);
+                const [data, creditData, providerData] = await Promise.all([
+                    getTVDetails(id),
+                    getTVCredits(id),
+                    getTVWatchProviders(id)
+                ]);
                 setTv(data);
+                setCast(creditData.cast.slice(0, 15));
+                setWatchProviders(providerData);
             } catch (err) {
                 setError("Failed to load series details.");
             } finally {
@@ -24,6 +37,23 @@ const TVDetails = () => {
         };
         fetch();
     }, [id]);
+
+    const handleWatchTrailer = async () => {
+        try {
+            const videoData = await getTVVideos(id);
+            const trailer = videoData.results.find(
+                (vid) => vid.type === "Trailer" && vid.site === "YouTube"
+            ) || videoData.results[0];
+
+            if (trailer) {
+                setTrailerKey(trailer.key);
+            }
+            setShowTrailer(true);
+        } catch (err) {
+            console.error("Failed to fetch trailer:", err);
+            setShowTrailer(true);
+        }
+    };
 
     if (loading) return <GlassSpinner fullPage message="Fetching Series Details" />;
     if (error) return <div className="error-container"><p>{error}</p></div>;
@@ -54,7 +84,9 @@ const TVDetails = () => {
                         />
 
                         <div className="movie-actions">
-                            <button className="btn-action primary">Watch Trailer</button>
+                            <button className="btn-action primary" onClick={handleWatchTrailer}>
+                                Watch Trailer
+                            </button>
                             <button className="btn-action secondary">+ Watchlist</button>
                         </div>
                     </div>
@@ -72,6 +104,8 @@ const TVDetails = () => {
                             <span className="meta-chip episodes">{tv.number_of_episodes} Episodes</span>
                             <span className="meta-chip status">{tv.status}</span>
                         </div>
+
+                        <WatchProviders providers={watchProviders} />
 
                         <div className="movie-overview-section">
                             <h3>Overview</h3>
@@ -99,6 +133,14 @@ const TVDetails = () => {
                     </div>
                 </div>
             </div>
+
+            <TrailerModal
+                isOpen={showTrailer}
+                onClose={() => setShowTrailer(false)}
+                trailerKey={trailerKey}
+                title={tv.name}
+            />
+            <CastCarousel cast={cast} title="Series Cast" />
         </div>
     );
 };

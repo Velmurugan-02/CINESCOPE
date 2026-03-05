@@ -79,3 +79,15 @@ export const getPopularTV = (page = 1) =>
 
 export const getPopularPeople = (page = 1) =>
   tmdbRequest("/person/popular", { page });
+
+export const getMovieVideos = (id) => tmdbRequest(`/movie/${id}/videos`);
+
+export const getTVVideos = (id) => tmdbRequest(`/tv/${id}/videos`);
+
+export const getMovieCredits = (id) => tmdbRequest(`/movie/${id}/credits`);
+
+export const getTVCredits = (id) => tmdbRequest(`/tv/${id}/credits`);
+
+export const getMovieWatchProviders = (id) => tmdbRequest(`/movie/${id}/watch/providers`);
+
+export const getTVWatchProviders = (id) => tmdbRequest(`/tv/${id}/watch/providers`);
