@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Github, Mail, Film, Tv2, Users, Bookmark, Search, Star, TrendingUp, Heart } from "lucide-react";
-import logo from "../assets/CINESCOPE.jpg";
+import { Github, Mail, Film, Tv2, Users, Bookmark, Search, Star, TrendingUp, Heart, Globe, HelpCircle, Info, MessageSquare } from "lucide-react";
 import "./Footer.css";
 
 const Footer = () => {
@@ -51,18 +50,22 @@ const Footer = () => {
                 <div className="footer-section">
                     <h4 className="footer-title">Your Space</h4>
                     <nav className="footer-nav">
-                        <NavLink className="footer-link" to="/watchlist">
-                            <Bookmark size={15} /> Watchlist
+                        <NavLink className="footer-link" to="/watchlater">
+                            <Bookmark size={15} /> Watchlater
                         </NavLink>
-                        <a className="footer-link footer-link--static" href="#">
-                            <Star size={15} /> Top Rated
-                        </a>
-                        <a className="footer-link footer-link--static" href="#">
-                            <TrendingUp size={15} /> Trending Now
-                        </a>
-                        <a className="footer-link footer-link--static" href="#">
+                        <NavLink className="footer-link" to="/favourites">
                             <Heart size={15} /> Favourites
-                        </a>
+                        </NavLink>
+                    </nav>
+                </div>
+
+                {/* Support Column */}
+                <div className="footer-section">
+                    <h4 className="footer-title">Support</h4>
+                    <nav className="footer-nav">
+                        <NavLink className="footer-link" to="/help"><HelpCircle size={15} /> Help Center</NavLink>
+                        <NavLink className="footer-link" to="/about"><Info size={15} /> About Us</NavLink>
+                        <NavLink className="footer-link" to="/feedback"><MessageSquare size={15} /> Feedback</NavLink>
                     </nav>
                 </div>
 
@@ -106,9 +109,9 @@ const Footer = () => {
                     Made with <Heart size={13} className="footer-heart" /> using React &amp; TMDB API
                 </p>
                 <div className="footer-bottom-links">
-                    <a href="#" className="footer-bottom-link">Privacy Policy</a>
+                    <NavLink to="/privacy" className="footer-bottom-link">Privacy Policy</NavLink>
                     <span className="footer-bottom-dot">·</span>
-                    <a href="#" className="footer-bottom-link">Terms of Use</a>
+                    <NavLink to="/terms" className="footer-bottom-link">Terms of Use</NavLink>
                 </div>
             </div>
         </footer>

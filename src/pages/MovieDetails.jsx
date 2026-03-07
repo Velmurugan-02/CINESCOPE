@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieDetails, getMovieVideos, getMovieCredits, getMovieWatchProviders } from "../api/tmdb";
+import { getCookie, setCookie } from "../utils/cookieUtils";
+import { Heart } from "lucide-react";
 import GlassSpinner from "../components/GlassSpinner";
 import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
 import CastCarousel from "../components/MoviesDetailsComponent/CastCarousel";
@@ -17,6 +19,7 @@ const MovieDetails = () => {
   const [trailerKey, setTrailerKey] = useState(null);
   const [cast, setCast] = useState([]);
   const [watchProviders, setWatchProviders] = useState(null);
+  const [isFavourite, setIsFavourite] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -37,6 +40,30 @@ const MovieDetails = () => {
     };
     fetch();
   }, [id]);
+
+  useEffect(() => {
+    if (movie) {
+      const favourites = JSON.parse(getCookie("favourite_movies") || "[]");
+      setIsFavourite(favourites.some((m) => m.id === movie.id));
+    }
+  }, [movie]);
+
+  const toggleFavourite = () => {
+    const favourites = JSON.parse(getCookie("favourite_movies") || "[]");
+    let updated;
+    if (isFavourite) {
+      updated = favourites.filter((m) => m.id !== movie.id);
+    } else {
+      updated = [...favourites, {
+        id: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+        vote_average: movie.vote_average
+      }];
+    }
+    setCookie("favourite_movies", JSON.stringify(updated), 30);
+    setIsFavourite(!isFavourite);
+  };
 
   const handleWatchTrailer = async () => {
     try {
@@ -88,6 +115,13 @@ const MovieDetails = () => {
                 Watch Trailer
               </button>
               <button className="btn-action secondary">+ Watchlist</button>
+              <button
+                className={`btn-action favourite ${isFavourite ? 'active' : ''}`}
+                onClick={toggleFavourite}
+                title={isFavourite ? "Remove from Favourites" : "Add to Favourites"}
+              >
+                <Heart size={20} fill={isFavourite ? "var(--primary)" : "none"} stroke={isFavourite ? "var(--primary)" : "currentColor"} />
+              </button>
             </div>
           </div>
 

@@ -4,12 +4,11 @@ import RoutesConfig from './RoutesConfig'
 import './Style/App.css'
 
 function App() {
-
   return (
     <>
       <Navbar />
       <main style={{ paddingTop: "72px" }}>
-        <RoutesConfig></RoutesConfig>
+        <RoutesConfig />
       </main>
       <Footer />
     </>

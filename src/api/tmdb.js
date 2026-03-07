@@ -62,6 +62,10 @@ export const getTVDetails = (id) => tmdbRequest(`/tv/${id}`);
 
 export const getPersonDetails = (id) => tmdbRequest(`/person/${id}`);
 
+export const getPersonImages = (id) => tmdbRequest(`/person/${id}/images`);
+
+export const getPersonCombinedCredits = (id) => tmdbRequest(`/person/${id}/combined_credits`);
+
 export const getTrendingMovies = (timeWindow = "week", page = 1) =>
   tmdbRequest(`/trending/movie/${timeWindow}`, { page });
 

@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
 import { useState, useEffect } from "react";
-import { Home, Film, Tv, Users, Bookmark, Menu, X } from "lucide-react";
+import { Home, Film, Tv, Users, Bookmark, Heart, Menu, X } from "lucide-react";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -28,6 +28,7 @@ export default function Navbar() {
     { to: "/tv", label: "TV Shows", Icon: Tv },
     { to: "/people", label: "People", Icon: Users },
     { to: "/watchlater", label: "WatchLater", Icon: Bookmark },
+    { to: "/favourites", label: "Favourites", Icon: Heart },
   ];
 
   return (

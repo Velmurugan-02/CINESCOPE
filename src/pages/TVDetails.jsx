@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTVDetails, getTVVideos, getTVCredits, getTVWatchProviders } from "../api/tmdb";
+import { getCookie, setCookie } from "../utils/cookieUtils";
+import { Heart } from "lucide-react";
 import GlassSpinner from "../components/GlassSpinner";
 import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
 import CastCarousel from "../components/TVDetailsComponent/CastCarousel";
@@ -17,6 +19,7 @@ const TVDetails = () => {
     const [trailerKey, setTrailerKey] = useState(null);
     const [cast, setCast] = useState([]);
     const [watchProviders, setWatchProviders] = useState(null);
+    const [isFavourite, setIsFavourite] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -37,6 +40,30 @@ const TVDetails = () => {
         };
         fetch();
     }, [id]);
+
+    useEffect(() => {
+        if (tv) {
+            const favourites = JSON.parse(getCookie("favourite_tv") || "[]");
+            setIsFavourite(favourites.some((t) => t.id === tv.id));
+        }
+    }, [tv]);
+
+    const toggleFavourite = () => {
+        const favourites = JSON.parse(getCookie("favourite_tv") || "[]");
+        let updated;
+        if (isFavourite) {
+            updated = favourites.filter((t) => t.id !== tv.id);
+        } else {
+            updated = [...favourites, {
+                id: tv.id,
+                name: tv.name,
+                poster_path: tv.poster_path,
+                vote_average: tv.vote_average
+            }];
+        }
+        setCookie("favourite_tv", JSON.stringify(updated), 30);
+        setIsFavourite(!isFavourite);
+    };
 
     const handleWatchTrailer = async () => {
         try {
@@ -88,6 +115,13 @@ const TVDetails = () => {
                                 Watch Trailer
                             </button>
                             <button className="btn-action secondary">+ Watchlist</button>
+                            <button
+                                className={`btn-action favourite ${isFavourite ? 'active' : ''}`}
+                                onClick={toggleFavourite}
+                                title={isFavourite ? "Remove from Favourites" : "Add to Favourites"}
+                            >
+                                <Heart size={20} fill={isFavourite ? "var(--primary)" : "none"} stroke={isFavourite ? "var(--primary)" : "currentColor"} />
+                            </button>
                         </div>
                     </div>
 

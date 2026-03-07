@@ -53,61 +53,64 @@ export default function PopularPeople() {
       )}
 
       {!isLoading && !isError && (
-        <div className="card-grid results-grid">
+        <div className="card-grid">
           {visible.map((person, index) => {
             const knownFor = (person.known_for || [])
               .map((item) => item.title || item.name)
               .filter(Boolean)
               .join(", ");
+            const popularity = Math.round(person.popularity);
+            const profile = person.profile_path
+              ? `https://image.tmdb.org/t/p/w300${person.profile_path}`
+              : null;
 
             return (
-              <div key={person.id} className="result-card person-card">
-                <div className="card-image-wrapper">
-                  {person.profile_path ? (
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
-                      alt={person.name}
-                      className="card-image"
-                      loading="lazy"
-                    />
+              <article className="media-card" key={person.id}>
+                <div className="media-posterWrap">
+                  {profile ? (
+                    <img className="media-poster" src={profile} alt={person.name} loading="lazy" />
                   ) : (
-                    <div className="no-image">
-                      <span>👤</span>
-                    </div>
+                    <div className="media-noPoster">No Image</div>
                   )}
-                  <div className="card-badges">
-                    {index < 3 && (
-                      <span className="rank-badge">#{index + 1}</span>
-                    )}
-                    <span className="rating-badge">
-                      📈 {Math.round(person.popularity)}
-                    </span>
-                  </div>
-                </div>
 
-                <div className="card-content">
-                  <div className="card-main-info">
-                    <h3 className="card-title">{person.name}</h3>
+                  {/* Standard badges: Rank on Left, Popularity on Right */}
+                  {index < 3 ? (
+                    <div className="top-ranked">#{index + 1}</div>
+                  ) : (
+                    <div className="movie-lang">PEOPLE</div>
+                  )}
+
+                  <div className="movie-rating">
+                    📈 {popularity}
                   </div>
 
-                  <p className="card-subtitle">{person.known_for_department}</p>
-
-                  {knownFor && (
-                    <p className="card-overview">
-                      Known for: {knownFor}
+                  <div className="media-overlay">
+                    <p className="media-overview">
+                      {knownFor ? `Known for: ${knownFor}` : "No details available."}
                     </p>
-                  )}
+                    <div className="media-stats">
+                      <span>Dept: {person.known_for_department}</span>
+                      <span>Pop: {popularity}</span>
+                    </div>
+                    <button
+                      className="media-cta"
+                      type="button"
+                      onClick={() => navigate(`/person/${person.id}`)}
+                    >
+                      View Profile
+                    </button>
+                  </div>
                 </div>
 
-                <div className="card-footer">
-                  <button
-                    className="view-details-btn"
-                    onClick={() => navigate(`/person/${person.id}`)}
-                  >
-                    View Profile
-                  </button>
+                <div className="media-info">
+                  <h3 className="media-title" title={person.name}>
+                    {person.name}
+                  </h3>
+                  <p className="media-meta">
+                    {person.known_for_department}
+                  </p>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>

@@ -51,12 +51,12 @@
 
 /* ── Grid Layout ───────────────────────────────── */
 .footer-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 2.2fr 1fr 1fr 1.6fr;
-    gap: 3rem;
-    padding-bottom: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2.5rem;
+    padding-bottom: 3.5rem;
 }
 
 /* ── Brand Column ──────────────────────────────── */
@@ -67,18 +67,18 @@
 }
 
 .navLogo_text {
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  color: #ffffff;
-  text-transform: uppercase;
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    color: #ffffff;
+    text-transform: uppercase;
 }
 
 .navLogo_accent {
-  background: linear-gradient(100deg, var(--nav-amber), var(--nav-purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+    background: linear-gradient(100deg, var(--nav-amber), var(--nav-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .footer-tagline {
@@ -409,5 +409,11 @@
 
     .footer-link:hover {
         transform: none;
+    }
+}
+
+@media (min-width: 1024px) {
+    .footer-brand {
+        grid-column: span 2;
     }
 }
