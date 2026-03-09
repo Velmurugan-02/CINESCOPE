@@ -7,6 +7,7 @@ import GlassSpinner from "../components/GlassSpinner";
 import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
 import CastCarousel from "../components/TVDetailsComponent/CastCarousel";
 import WatchProviders from "../components/MoviesDetailsComponent/WatchProviders";
+import Recommendations from "../components/MoviesDetailsComponent/Recommendations";
 import "./TVDetails.css";
 
 const TVDetails = () => {
@@ -173,7 +174,13 @@ const TVDetails = () => {
                 trailerKey={trailerKey}
                 title={tv.name}
             />
-            <CastCarousel cast={cast} title="Series Cast" />
+
+            {/* Below-the-fold sections */}
+            <div className="movie-sections-container">
+                <CastCarousel cast={cast} title="Series Cast" />
+                <hr className="section-divider" />
+                <Recommendations id={id} type="tv" />
+            </div>
         </div>
     );
 };

@@ -1,0 +1,69 @@
+/* Recommendations Section */
+.recommendations-section {
+    margin-top: 2rem;
+}
+
+.rec-card {
+    flex: 0 0 180px;
+    cursor: pointer;
+}
+
+/* Loading State */
+.rec-loading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+    justify-content: center;
+}
+
+.rec-loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Error + Empty States */
+.rec-error,
+.rec-empty {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    margin: 2rem 0;
+}
+
+.rec-error-detail {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-top: 0.5rem;
+}
+
+/* Badges alignment for rec cards */
+.rec-card .media-badges {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    z-index: 2;
+}
+
+/* Overlay actions side by side */
+.overlay-actions {
+    display: flex;
+    gap: 0.5rem;
+}

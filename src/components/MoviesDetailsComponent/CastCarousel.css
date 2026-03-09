@@ -1,105 +1,15 @@
-.cast-carousel-section {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+/* RailSlider handles section-header, title, count, arrows, and scroll container */
 
-.cast-carousel-section .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-}
-
-.cast-carousel-section .section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    color: var(--text);
-}
-
-.cast-carousel-section .carousel-count {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 500;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-}
-
-/* Scroll Container */
-.carousel-relative-container {
-    position: relative;
-    margin: 0 -0.5rem;
-}
-
-.cast-scroll-container {
-    display: flex;
-    overflow-x: auto;
-    gap: 1.5rem;
-    padding: 0.5rem 0.5rem 1.5rem;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    /* Firefox */
-}
-
-.cast-scroll-container::-webkit-scrollbar {
-    display: none;
-    /* Chrome, Safari, Edge */
-}
-
-/* Nav Buttons */
-.carousel-nav-btn {
-    position: absolute;
-    top: 60px;
-    /* Center with avatar */
-    transform: translateY(-50%);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.cast-item {
+    flex: 0 0 auto;
+    width: 130px;
+    text-align: center;
     cursor: pointer;
-    z-index: 10;
-    transition: all 0.3s ease;
-    opacity: 0;
-    /* Hidden by default, shown on container hover */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.carousel-relative-container:hover .carousel-nav-btn {
-    opacity: 1;
-}
-
-.carousel-nav-btn:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.carousel-nav-btn.left {
-    left: -20px;
-}
-
-.carousel-nav-btn.right {
-    right: -20px;
-}
-
-@media (max-width: 768px) {
-    .carousel-nav-btn {
-        display: none;
-        /* Hide arrows on mobile, use touch scroll */
-    }
-
-    .cast-scroll-container {
-        scrollbar-width: none;
-        padding-bottom: 0.5rem;
-    }
+.cast-item:hover {
+    transform: translateY(-8px);
 }
 
 /* Cast Item */

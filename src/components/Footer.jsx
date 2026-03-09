@@ -40,10 +40,33 @@ const Footer = () => {
                         <NavLink className="footer-link" to="/people">
                             <Users size={15} /> People
                         </NavLink>
-                        <NavLink className="footer-link" to="/search">
-                            <Search size={15} /> Search
-                        </NavLink>
                     </nav>
+                </div>
+
+                {/* Search Column */}
+                <div className="footer-section footer-search-section">
+                    <h4 className="footer-title">Quick Search</h4>
+                    <form
+                        className="footer-search-form"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            const q = e.target.search.value.trim();
+                            if (q) window.location.href = `/search?q=${encodeURIComponent(q)}&type=all&page=1`;
+                        }}
+                    >
+                        <div className="footer-search-input-wrap">
+                            <input
+                                type="text"
+                                name="search"
+                                placeholder="Search..."
+                                className="footer-search-input"
+                                required
+                            />
+                            <button type="submit" className="footer-search-btn">
+                                <Search size={16} />
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
                 {/* My Space Column */}

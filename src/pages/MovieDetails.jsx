@@ -7,6 +7,7 @@ import GlassSpinner from "../components/GlassSpinner";
 import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
 import CastCarousel from "../components/MoviesDetailsComponent/CastCarousel";
 import WatchProviders from "../components/MoviesDetailsComponent/WatchProviders";
+import Recommendations from "../components/MoviesDetailsComponent/Recommendations";
 import "./MovieDetails.css";
 
 const MovieDetails = () => {
@@ -87,6 +88,7 @@ const MovieDetails = () => {
 
   return (
     <div className="movie-details-page">
+      {/* Backdrop */}
       <div
         className="movie-backdrop"
         style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` }}
@@ -94,11 +96,9 @@ const MovieDetails = () => {
         <div className="backdrop-overlay"></div>
       </div>
 
+      {/* Main hero content */}
       <div className="movie-content-container">
-        <button
-          onClick={() => navigate(-1)}
-          className="btn-back"
-        >
+        <button onClick={() => navigate(-1)} className="btn-back">
           <span className="back-icon">←</span> Back
         </button>
 
@@ -109,18 +109,21 @@ const MovieDetails = () => {
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
             />
-
             <div className="movie-actions">
               <button className="btn-action primary" onClick={handleWatchTrailer}>
                 Watch Trailer
               </button>
               <button className="btn-action secondary">+ Watchlist</button>
               <button
-                className={`btn-action favourite ${isFavourite ? 'active' : ''}`}
+                className={`btn-action favourite ${isFavourite ? "active" : ""}`}
                 onClick={toggleFavourite}
                 title={isFavourite ? "Remove from Favourites" : "Add to Favourites"}
               >
-                <Heart size={20} fill={isFavourite ? "var(--primary)" : "none"} stroke={isFavourite ? "var(--primary)" : "currentColor"} />
+                <Heart
+                  size={20}
+                  fill={isFavourite ? "var(--primary)" : "none"}
+                  stroke={isFavourite ? "var(--primary)" : "currentColor"}
+                />
               </button>
             </div>
           </div>
@@ -138,7 +141,6 @@ const MovieDetails = () => {
               <span className="meta-chip status">{movie.status}</span>
             </div>
 
-
             <div className="movie-overview-section">
               <h3>Overview</h3>
               <p className="movie-overview">{movie.overview}</p>
@@ -155,22 +157,33 @@ const MovieDetails = () => {
               </div>
               <div className="info-item">
                 <span className="info-label">Companies</span>
-                <span className="info-value">{movie.production_companies?.map(c => c.name).join(", ")}</span>
+                <span className="info-value">
+                  {movie.production_companies?.map((c) => c.name).join(", ")}
+                </span>
               </div>
             </div>
+
             <WatchProviders providers={watchProviders} />
           </div>
         </div>
       </div>
 
+      {/* Trailer Modal */}
       <TrailerModal
         isOpen={showTrailer}
         onClose={() => setShowTrailer(false)}
         trailerKey={trailerKey}
         title={movie.title}
       />
-      <CastCarousel cast={cast} title="Top Cast" />
+
+      {/* Below-the-fold sections inside a padded container */}
+      <div className="movie-sections-container">
+        <CastCarousel cast={cast} title="Top Cast" />
+        <hr className="section-divider" />
+        <Recommendations id={id} type="movie" />
+      </div>
     </div>
   );
 };
+
 export default MovieDetails;

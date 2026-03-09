@@ -98,135 +98,13 @@
   gap: 1.25rem;
 }
 
-/* Movie Card */
-.movie-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.movie-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-  border-color: var(--primary);
-}
-
-.movie-card:hover .movie-title {
-  color: var(--primary);
-}
-
-/* Movie Poster */
-.movie-poster {
-  position: relative;
-  aspect-ratio: 2/3;
-  overflow: hidden;
-  background: var(--bg);
-}
-
-.poster-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.movie-card:hover .poster-image {
-  transform: scale(1.05);
-}
-
-.no-poster {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--surface-2);
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  text-align: center;
-  padding: 1rem;
-}
-
-/* Badges */
-.movie-rating {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  color: #fbbf24;
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  z-index: 2;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.top-ranked {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  background: var(--primary);
-  color: white;
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  z-index: 2;
-  box-shadow: 0 4px 12px rgba(114, 16, 211, 0.4);
-}
-
-.movie-lang {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  color: white;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  z-index: 2;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-transform: uppercase;
-}
-
-/* Movie Info */
-.movie-info {
-  padding: 1rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.movie-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: color 0.3s ease;
-}
+/* Movie Card base styles are now handled globally in media-card.css */
 
 .movie-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  /* Pushes meta to bottom if overview is short/hidden */
 }
 
 .release-date {
@@ -255,20 +133,16 @@
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
-.movie-overview {
-  font-size: 0.75rem;
-  color: var(--text-2);
-  line-height: 1.5;
-  margin: 0.25rem 0 0.75rem 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.media-overview {
+  margin-bottom: 1rem;
 }
 
-/* Unhide details button for style (optional, if user wants it back) */
+.trending-content .media-cta {
+  width: 100%;
+}
+
 .details-button {
   display: none;
-  /* Keep hidden as per previous design choice, or enable if desired */
   margin-top: auto;
   background: transparent;
   border: 1px solid var(--primary);

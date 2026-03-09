@@ -141,7 +141,7 @@ export default function GenreTVshows() {
                                             <span className="badge">⭐ {rating}</span>
                                         </div>
 
-                                        {index < 3 && <div className="rank-badge">#{index + 1}</div>}
+                                        {index < 3 && <div className="top-ranked">#{index + 1}</div>}
 
                                         <div className="media-overlay">
                                             <p className="media-overview">{overview}</p>

@@ -142,7 +142,7 @@ export default function TrendingMovieSection() {
                       {movie.adult ? "18+" : "ALL"}
                     </span>
                   </div>
-                  <p className="movie-overview">
+                  <p className="media-overview">
                     {movie.overview
                       ? (movie.overview.length > 120
                         ? `${movie.overview.substring(0, 120)}...`

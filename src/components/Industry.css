@@ -1,0 +1,40 @@
+.industry-section-main {
+    max-width: 1400px;
+    margin: 3rem auto 0;
+    padding: 2.5rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.industry-section-main .section-header {
+    margin-bottom: 2rem;
+}
+
+.industry-section-main .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.industry-section-main .section-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text);
+}
+
+.industry-section-main .section-badge {
+    background: rgba(114, 16, 211, 0.1);
+    color: var(--primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.industry-section-main .section-subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}

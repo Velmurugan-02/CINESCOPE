@@ -6,6 +6,13 @@
     padding-bottom: 4rem;
 }
 
+/* Container for CastCarousel + Recommendations */
+.movie-sections-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
 /* Backdrop Area */
 .movie-backdrop {
     position: fixed;
@@ -164,6 +171,13 @@
     font-weight: 600;
     font-size: 0.9rem;
     backdrop-filter: blur(5px);
+}
+
+.section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 4rem 0 2rem;
+    opacity: 0.5;
 }
 
 .meta-chip.rating {
