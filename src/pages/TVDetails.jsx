@@ -8,6 +8,7 @@ import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
 import CastCarousel from "../components/TVDetailsComponent/CastCarousel";
 import WatchProviders from "../components/MoviesDetailsComponent/WatchProviders";
 import Recommendations from "../components/MoviesDetailsComponent/Recommendations";
+import MovieReview from "../components/MoviesDetailsComponent/MovieReview";
 import "./TVDetails.css";
 
 const TVDetails = () => {
@@ -180,6 +181,8 @@ const TVDetails = () => {
                 <CastCarousel cast={cast} title="Series Cast" />
                 <hr className="section-divider" />
                 <Recommendations id={id} type="tv" />
+                <hr className="section-divider" />
+                <MovieReview id={id} type="tv" />
             </div>
         </div>
     );

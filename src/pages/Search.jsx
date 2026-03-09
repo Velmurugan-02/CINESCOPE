@@ -1,13 +1,16 @@
 import { useMemo, useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { searchMulti, searchMovie, searchTV, searchPerson } from "../api/tmdb";
+import { getCookie, setCookie } from "../utils/cookieUtils";
 import SkeletonCard from "../components/SkeletonCard";
 import ErrorState from "../components/ErrorState";
+import "../assets/media-card.css";
 import "./Search.css";
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const q = searchParams.get("q") || "";
   const type = searchParams.get("type") || "all";
@@ -124,84 +127,105 @@ export default function Search() {
           <>
             <div className="results-grid">
               {results.map((item) => {
-                const mediaType = item.media_type || (type !== 'all' ? type : null);
-                const id = item.id;
+                const mediaType = item.media_type || (type !== "all" ? type : null);
+                const itemId = item.id;
                 const title = item.title || item.name || item.original_name || "Untitled";
                 const releaseDate = item.release_date || item.first_air_date;
-                const year = releaseDate ? new Date(releaseDate).getFullYear() : '';
-                const rating = item.vote_average ? (item.vote_average * 10).toFixed(0) : null;
-
-                // Image handling
+                const year = releaseDate ? new Date(releaseDate).getFullYear() : "";
+                const rawRating = item.vote_average;
+                const rating = typeof rawRating === "number" && rawRating > 0
+                  ? rawRating.toFixed(1)
+                  : null;
+                const lang = (item.original_language || "").toUpperCase();
                 const imagePath = item.poster_path || item.profile_path;
                 const imageUrl = imagePath
-                  ? `https://image.tmdb.org/t/p/w500${imagePath}`
+                  ? `https://image.tmdb.org/t/p/w342${imagePath}`
                   : null;
-
                 const href = mediaType === "movie"
-                  ? `/movie/${id}`
+                  ? `/movie/${itemId}`
                   : mediaType === "tv"
-                    ? `/tv/${id}`
+                    ? `/tv/${itemId}`
                     : mediaType === "person"
-                      ? `/person/${id}`
+                      ? `/person/${itemId}`
                       : null;
 
+                const cookieName = mediaType === "tv" ? "watchlater_tv" : "watchlater_movies";
+                const watchlater = JSON.parse(getCookie(cookieName) || "[]");
+                const inWL = watchlater.some((m) => m.id === itemId);
+
+                const toggleWL = (e) => {
+                  e.stopPropagation();
+                  const list = JSON.parse(getCookie(cookieName) || "[]");
+                  const exists = list.find((m) => m.id === itemId);
+                  const updated = exists
+                    ? list.filter((m) => m.id !== itemId)
+                    : [...list, { id: itemId, title, poster_path: item.poster_path, vote_average: item.vote_average }];
+                  setCookie(cookieName, JSON.stringify(updated), 7);
+                };
+
                 return (
-                  <div key={`${mediaType}-${id}`} className="result-card">
-                    <div className="card-image-wrapper">
+                  <article
+                    key={`${mediaType}-${itemId}`}
+                    className="media-card"
+                    onClick={() => href && navigate(href)}
+                    style={{ cursor: href ? "pointer" : "default" }}
+                  >
+                    <div className="media-posterWrap">
                       {imageUrl ? (
-                        <img src={imageUrl} alt={title} className="card-image" loading="lazy" />
+                        <img className="media-poster" src={imageUrl} alt={title} loading="lazy" />
                       ) : (
-                        <div className="no-image">
-                          <span>{getMediaIcon(mediaType)}</span>
+                        <div className="media-noPoster">
+                          <span>{mediaType === "movie" ? "🎬" : mediaType === "tv" ? "📺" : "👤"}</span>
                         </div>
                       )}
-                      <div className="card-badges">
-                        <span className="media-type-badge">
-                          {getMediaIcon(mediaType)} {mediaType?.toUpperCase()}
-                        </span>
-                        {rating && (
-                          <span className="rating-badge" style={{
-                            color: rating >= 70 ? '#4caf50' : rating >= 50 ? '#ffc107' : '#f44336'
-                          }}>
-                            ★ {rating}%
+
+                      {/* Badges */}
+                      {lang && <span className="movie-lang">{lang}</span>}
+                      {rating && <span className="movie-rating">⭐ {rating}</span>}
+
+                      {/* Hover Overlay */}
+                      <div className="media-overlay">
+                        <p className="media-overview">
+                          {item.overview || item.known_for_department || "No overview available."}
+                        </p>
+                        <div className="overlay-actions">
+                          {href && (
+                            <button
+                              className="media-cta"
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); navigate(href); }}
+                            >
+                              View
+                            </button>
+                          )}
+                          {(mediaType === "movie" || mediaType === "tv") && (
+                            <button
+                              className={`media-cta ${inWL ? "active" : ""}`}
+                              type="button"
+                              onClick={toggleWL}
+                              title={inWL ? "Remove from Watch Later" : "Add to Watch Later"}
+                            >
+                              {inWL ? "✓" : "+"}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="media-info">
+                      <h3 className="media-title" title={title}>{title}</h3>
+                      <p className="media-meta">
+                        {year && <span>{year}</span>}
+                        {year && rating && <span> · </span>}
+                        {rating && <span>⭐ {rating}</span>}
+                        {mediaType && (
+                          <span className="search-type-badge">
+                            {mediaType === "movie" ? "Movie" : mediaType === "tv" ? "TV" : "Person"}
                           </span>
                         )}
-                      </div>
+                      </p>
                     </div>
-
-                    <div className="card-content">
-                      <div className="card-main-info">
-                        <h3 className="card-title">{title}</h3>
-                        {year && <span className="card-year">{year}</span>}
-                      </div>
-
-                      {item.character && (
-                        <p className="card-subtitle">as <strong>{item.character}</strong></p>
-                      )}
-                      {item.job && (
-                        <p className="card-subtitle">{item.job}</p>
-                      )}
-                      {item.known_for_department && (
-                        <p className="card-subtitle">{item.known_for_department}</p>
-                      )}
-
-                      {item.overview && (
-                        <p className="card-overview">
-                          {item.overview.length > 100
-                            ? `${item.overview.substring(0, 100)}...`
-                            : item.overview}
-                        </p>
-                      )}
-                    </div>
-
-                    {href && (
-                      <div className="card-footer">
-                        <Link to={href} className="view-details-btn">
-                          View Details
-                        </Link>
-                      </div>
-                    )}
-                  </div>
+                  </article>
                 );
               })}
             </div>

@@ -101,3 +101,7 @@ export const getTVWatchProviders = (id) => tmdbRequest(`/tv/${id}/watch/provider
 export const getMovieRecommendations = (id) => tmdbRequest(`/movie/${id}/recommendations`);
 
 export const getTVRecommendations = (id) => tmdbRequest(`/tv/${id}/recommendations`);
+
+export const getMovieReviews = (id) => tmdbRequest(`/movie/${id}/reviews`);
+
+export const getTVReviews = (id) => tmdbRequest(`/tv/${id}/reviews`);
