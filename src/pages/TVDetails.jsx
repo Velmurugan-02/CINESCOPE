@@ -22,6 +22,7 @@ const TVDetails = () => {
     const [cast, setCast] = useState([]);
     const [watchProviders, setWatchProviders] = useState(null);
     const [isFavourite, setIsFavourite] = useState(false);
+    const [isWatchLater, setIsWatchLater] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -47,6 +48,9 @@ const TVDetails = () => {
         if (tv) {
             const favourites = JSON.parse(getCookie("favourite_tv") || "[]");
             setIsFavourite(favourites.some((t) => t.id === tv.id));
+
+            const watchLater = JSON.parse(getCookie("watchlater_tv") || "[]");
+            setIsWatchLater(watchLater.some((t) => t.id === tv.id));
         }
     }, [tv]);
 
@@ -84,6 +88,24 @@ const TVDetails = () => {
         }
     };
 
+    const handleWatchLater = () => {
+        const watchLater = JSON.parse(getCookie("watchlater_tv") || "[]");
+        let updated;
+        const alreadyAdded = watchLater.some((t) => t.id === tv.id);
+        if (alreadyAdded) {
+            updated = watchLater.filter((t) => t.id !== tv.id);
+        } else {
+            updated = [...watchLater, {
+                id: tv.id,
+                name: tv.name,
+                poster_path: tv.poster_path,
+                vote_average: tv.vote_average
+            }];
+        }
+        setCookie("watchlater_tv", JSON.stringify(updated), 30);
+        setIsWatchLater(!alreadyAdded);
+    };
+
     if (loading) return <GlassSpinner fullPage message="Fetching Series Details" />;
     if (error) return <div className="error-container"><p>{error}</p></div>;
 
@@ -116,7 +138,7 @@ const TVDetails = () => {
                             <button className="btn-action primary" onClick={handleWatchTrailer}>
                                 Watch Trailer
                             </button>
-                            <button className="btn-action secondary">+ Watchlist</button>
+                            <button className="btn-action secondary" onClick={handleWatchLater}>{isWatchLater ? "Remove from Watchlater" : "+ Watchlater"}</button>
                             <button
                                 className={`btn-action favourite ${isFavourite ? 'active' : ''}`}
                                 onClick={toggleFavourite}

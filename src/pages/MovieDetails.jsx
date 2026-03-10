@@ -22,6 +22,7 @@ const MovieDetails = () => {
   const [cast, setCast] = useState([]);
   const [watchProviders, setWatchProviders] = useState(null);
   const [isFavourite, setIsFavourite] = useState(false);
+  const [isWatchLater, setIsWatchLater] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -47,6 +48,9 @@ const MovieDetails = () => {
     if (movie) {
       const favourites = JSON.parse(getCookie("favourite_movies") || "[]");
       setIsFavourite(favourites.some((m) => m.id === movie.id));
+
+      const watchLater = JSON.parse(getCookie("watchlater_movies") || "[]");
+      setIsWatchLater(watchLater.some((m) => m.id === movie.id));
     }
   }, [movie]);
 
@@ -84,6 +88,24 @@ const MovieDetails = () => {
     }
   };
 
+  const handleWatchLater = () => {
+    const watchLater = JSON.parse(getCookie("watchlater_movies") || "[]");
+    let updated;
+    const alreadyAdded = watchLater.some((m) => m.id === movie.id);
+    if (alreadyAdded) {
+      updated = watchLater.filter((m) => m.id !== movie.id);
+    } else {
+      updated = [...watchLater, {
+        id: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+        vote_average: movie.vote_average
+      }];
+    }
+    setCookie("watchlater_movies", JSON.stringify(updated), 30);
+    setIsWatchLater(!alreadyAdded);
+  };
+
   if (loading) return <GlassSpinner fullPage message="Fetching Details" />;
   if (error) return <p>{error}</p>;
 
@@ -114,7 +136,7 @@ const MovieDetails = () => {
               <button className="btn-action primary" onClick={handleWatchTrailer}>
                 Watch Trailer
               </button>
-              <button className="btn-action secondary">+ Watchlist</button>
+              <button className="btn-action secondary" onClick={handleWatchLater}>{isWatchLater ? "Remove from Watchlater" : "+ Watchlater"}</button>
               <button
                 className={`btn-action favourite ${isFavourite ? "active" : ""}`}
                 onClick={toggleFavourite}
@@ -163,7 +185,6 @@ const MovieDetails = () => {
                 </span>
               </div>
             </div>
-
             <WatchProviders providers={watchProviders} />
           </div>
         </div>
