@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getPersonDetails, getPersonImages, getPersonCombinedCredits } from "../api/tmdb";
 import { Share2, Image as ImageIcon, X, ChevronLeft, ChevronRight } from "lucide-react";
 import GlassSpinner from "../components/GlassSpinner";
+import { addToHistory } from "../utils/historyUtils";
 import "./PersonDetails.css";
 
 const PersonDetails = () => {
@@ -30,6 +31,15 @@ const PersonDetails = () => {
 
                 setPerson(details);
                 setImages(imagesData.profiles || []);
+
+                // Track in history
+                addToHistory({
+                    id: details.id,
+                    type: "person",
+                    name: details.name,
+                    title: details.name,
+                    poster_path: details.profile_path,
+                });
 
                 // Sort by popularity and take top 8
                 const sortedCredits = (creditsData.cast || [])

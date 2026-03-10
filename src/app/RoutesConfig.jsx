@@ -19,6 +19,7 @@ import Privacy from "../pages/Privacy";
 import Terms from "../pages/Terms";
 import Favourites from "../pages/Favourites";
 import NotFound from "../pages/NotFound";
+import History from "../pages/History";
 
 const RoutesConfig = () => {
     return (
@@ -31,6 +32,7 @@ const RoutesConfig = () => {
             <Route path="/terms" element={<Terms />} />
             <Route path="/favourites" element={<Favourites />} />
             <Route path="/watchlater" element={<Watchlater />} />
+            <Route path="/history" element={<History />} />
 
             {/* Core Pages */}
             <Route path="/" element={<Home />} />

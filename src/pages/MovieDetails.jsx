@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieDetails, getMovieVideos, getMovieCredits, getMovieWatchProviders } from "../api/tmdb";
 import { getCookie, setCookie } from "../utils/cookieUtils";
+import { addToHistory } from "../utils/historyUtils";
 import { Heart } from "lucide-react";
 import GlassSpinner from "../components/GlassSpinner";
 import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
@@ -35,6 +36,14 @@ const MovieDetails = () => {
         setMovie(movieData);
         setCast(creditData.cast);
         setWatchProviders(providerData);
+        // Track in history
+        addToHistory({
+          id: movieData.id,
+          type: "movie",
+          title: movieData.title,
+          poster_path: movieData.poster_path,
+          vote_average: movieData.vote_average,
+        });
       } catch (err) {
         setError("Failed to load movie.");
       } finally {

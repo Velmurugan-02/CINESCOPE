@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTVDetails, getTVVideos, getTVCredits, getTVWatchProviders } from "../api/tmdb";
 import { getCookie, setCookie } from "../utils/cookieUtils";
+import { addToHistory } from "../utils/historyUtils";
 import { Heart } from "lucide-react";
 import GlassSpinner from "../components/GlassSpinner";
 import TrailerModal from "../components/MoviesDetailsComponent/TrailerModal";
@@ -35,6 +36,14 @@ const TVDetails = () => {
                 setTv(data);
                 setCast(creditData.cast);
                 setWatchProviders(providerData);
+                // Track in history
+                addToHistory({
+                    id: data.id,
+                    type: "tv",
+                    title: data.name,
+                    poster_path: data.poster_path,
+                    vote_average: data.vote_average,
+                });
             } catch (err) {
                 setError("Failed to load series details.");
             } finally {

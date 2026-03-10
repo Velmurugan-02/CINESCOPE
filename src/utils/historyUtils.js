@@ -1,6 +1,3 @@
-// utils/historyUtils.js
-// Stores recently viewed items in localStorage (max 50 entries)
-
 const HISTORY_KEY = "cinescope_history";
 const MAX_ITEMS = 50;
 
@@ -16,18 +13,16 @@ export function addToHistory(item) {
     // item = { id, type, title, poster_path, vote_average, viewedAt }
     try {
         const history = getHistory();
-        // Remove duplicate if already exists
         const filtered = history.filter(
             (h) => !(h.id === item.id && h.type === item.type)
         );
-        // Add to front with timestamp
         const updated = [
             { ...item, viewedAt: new Date().toISOString() },
             ...filtered,
         ].slice(0, MAX_ITEMS);
         localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
     } catch {
-        // Silently fail if localStorage is unavailable
+        console.log();
     }
 }
 
@@ -48,7 +43,7 @@ export function clearHistory() {
     try {
         localStorage.removeItem(HISTORY_KEY);
     } catch {
-        // Silently fail
+        console.log("Error clearing history");
     }
 }
 
