@@ -309,7 +309,7 @@
 
 /* ── App Features Column ───────────────────────── */
 .footer-features-section {
-    min-width: 200px;
+    min-width: 0;
 }
 
 .footer-features-list {
@@ -318,16 +318,18 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.55rem;
+    align-items: flex-start;
 }
 
 .footer-feature-item {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    font-size: 0.85rem;
+    gap: 0.5rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
     transition: color 0.2s ease;
+    white-space: nowrap;
 }
 
 .footer-feature-item:hover {
@@ -512,6 +514,13 @@
         grid-column: 1 / -1;
     }
 
+    .footer-features-list {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        justify-content: center;
+        gap: 0.6rem 2rem;
+    }
+
     .footer-title::after {
         left: 0;
     }
@@ -566,5 +575,12 @@
 
     .footer-link:hover {
         transform: none;
+    }
+
+    .footer-features-list {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        justify-content: center;
+        gap: 0.55rem 1.5rem;
     }
 }

@@ -10,7 +10,6 @@ export function getHistory() {
 }
 
 export function addToHistory(item) {
-    // item = { id, type, title, poster_path, vote_average, viewedAt }
     try {
         const history = getHistory();
         const filtered = history.filter(
@@ -22,7 +21,7 @@ export function addToHistory(item) {
         ].slice(0, MAX_ITEMS);
         localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
     } catch {
-        console.log();
+        console.log("Error adding to history");
     }
 }
 
