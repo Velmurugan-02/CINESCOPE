@@ -1,5 +1,7 @@
 // src/api/tmdb.js
-const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
+const BASE_URL = import.meta.env.PROD 
+  ? "/tmdb-api" 
+  : (import.meta.env.VITE_TMDB_BASE_URL || "https://api.themoviedb.org/3");
 
 function getBearerToken() {
   const token = import.meta.env.VITE_TMDB_TOKEN;
