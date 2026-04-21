@@ -1,7 +1,5 @@
 // src/api/tmdb.js
-// Dev uses direct TMDB fetching (relies on browser Secure DNS). 
-// Prod (Netlify) uses the reverse proxy to completely bypass ISP network blocks.
-const BASE_URL = import.meta.env.PROD ? "/tmdb-api" : import.meta.env.VITE_TMDB_BASE_URL;
+const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 
 function getBearerToken() {
   const token = import.meta.env.VITE_TMDB_TOKEN;
