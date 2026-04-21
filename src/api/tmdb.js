@@ -1,5 +1,7 @@
 // src/api/tmdb.js
-const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
+// Dev uses direct TMDB fetching (relies on browser Secure DNS). 
+// Prod (Netlify) uses the reverse proxy to completely bypass ISP network blocks.
+const BASE_URL = import.meta.env.PROD ? "/tmdb-api" : import.meta.env.VITE_TMDB_BASE_URL;
 
 function getBearerToken() {
   const token = import.meta.env.VITE_TMDB_TOKEN;
@@ -45,16 +47,16 @@ export async function tmdbRequest(path, params = {}, options = {}) {
 
 // ===== Ready-to-use API functions =====
 export const searchMulti = (query, page = 1) =>
-  tmdbRequest("/search/multi", { query, page, include_adult: false });
+  tmdbRequest("/search/multi", { query, page });
 
 export const searchMovie = (query, page = 1) =>
-  tmdbRequest("/search/movie", { query, page, include_adult: false });
+  tmdbRequest("/search/movie", { query, page });
 
 export const searchTV = (query, page = 1) =>
-  tmdbRequest("/search/tv", { query, page, include_adult: false });
+  tmdbRequest("/search/tv", { query, page });
 
 export const searchPerson = (query, page = 1) =>
-  tmdbRequest("/search/person", { query, page, include_adult: false });
+  tmdbRequest("/search/person", { query, page });
 
 export const getMovieDetails = (id) => tmdbRequest(`/movie/${id}`);
 

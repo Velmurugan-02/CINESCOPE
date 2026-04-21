@@ -23,7 +23,6 @@ export default function PopularTVshows() {
         const res = await tmdbRequest("/discover/tv", {
           with_original_language: "en",
           sort_by: "popularity.desc",
-          include_adult: false,
           page: 1,
         });
 

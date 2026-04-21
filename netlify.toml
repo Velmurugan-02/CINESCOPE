@@ -1,0 +1,12 @@
+[[redirects]]
+  from = "/tmdb-api/*"
+  to = "https://api.themoviedb.org/3/:splat"
+  status = 200
+  force = true
+
+# Fallback for React Router (Single Page Application)
+# This MUST be the last redirect rule!
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -73,7 +73,6 @@ export default function IndustryMovies() {
                 const res = await tmdbRequest("/discover/movie", {
                     ...currentIndustry.params,
                     ...SECTIONS[activeSection].params,
-                    include_adult: false,
                     page,
                 });
                 setMovies(res?.results || []);

@@ -24,9 +24,7 @@ export const IntroComponent = memo(() => {
     return (
         <section
             className="intro"
-            style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(11, 15, 23, 0.8) 0%, rgba(11, 15, 23, 0.95) 100%), url(${bgImage})`,
-            }}
+            style={{ "--bg-img": `url(${bgImage})` }}
         >
             {/* Ambient glow orbs */}
             <div className="intro_orb intro_orb--amber" />

@@ -38,7 +38,6 @@ export default function GenreMovies() {
                 const res = await tmdbRequest("/discover/movie", {
                     with_genres: id,
                     sort_by: "popularity.desc",
-                    include_adult: false,
                     page,
                 });
                 setMovies(res?.results || []);

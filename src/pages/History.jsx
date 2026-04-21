@@ -5,9 +5,9 @@ import { getHistory, removeFromHistory, clearHistory, formatViewedAt } from "../
 import "./History.css";
 
 const TYPE_CONFIG = {
-    movie: { label: "Movies", Icon: Film, route: "movie", color: "#ffb86c" },
-    tv: { label: "TV Shows", Icon: Tv, route: "tv", color: "#b28cff" },
-    person: { label: "People", Icon: User, route: "person", color: "#38c7ff" },
+    movie: { label: "Movies", singular: "Movie", Icon: Film, route: "movie", color: "#ffb86c" },
+    tv: { label: "TV Shows", singular: "TV Show", Icon: Tv, route: "tv", color: "#b28cff" },
+    person: { label: "People", singular: "Person", Icon: User, route: "person", color: "#38c7ff" },
 };
 
 export default function History() {
@@ -72,7 +72,7 @@ export default function History() {
                         style={{ color: config.color, borderColor: config.color + "44", background: config.color + "18" }}
                     >
                         <config.Icon size={11} />
-                        {config.label.slice(0, -1)}
+                        {config.singular}
                     </span>
 
                     {/* Rating badge */}

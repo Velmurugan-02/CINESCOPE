@@ -23,7 +23,6 @@ export default function PopularMoviesSection() {
         const res = await tmdbRequest("/discover/movie", {
           with_original_language: "en",
           sort_by: "popularity.desc",
-          include_adult: false,
           page: 1,
         });
 

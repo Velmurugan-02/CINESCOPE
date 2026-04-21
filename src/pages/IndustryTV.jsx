@@ -71,7 +71,6 @@ export default function IndustryTV() {
                 const res = await tmdbRequest("/discover/tv", {
                     ...currentIndustry.params,
                     ...SECTIONS[activeSection].params,
-                    include_adult: false,
                     page,
                 });
                 setTVShows(res?.results || []);

@@ -215,6 +215,84 @@
 
 
 
+/* ════════════════════════════════════════════════
+   LIGHT MODE STYLES
+   ════════════════════════════════════════════════ */
+[data-theme="light"] .searchBar {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .searchBar.focused {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(114, 16, 211, 0.4);
+    box-shadow: 
+        0 0 0 3px rgba(114, 16, 211, 0.15), 
+        0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .searchBar:not(.focused):hover {
+    background: rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .searchInput {
+    color: #1a1a24;
+}
+
+[data-theme="light"] .searchInput::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .searchIcon {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .searchBar.focused .searchIcon {
+    color: #7210d3;
+}
+
+[data-theme="light"] .searchClear {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .searchKbd {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .searchFilter {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #7210d3;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237210d3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+[data-theme="light"] .searchFilter option {
+    background-color: #ffffff;
+    color: #1a1a24;
+}
+
+[data-theme="light"] .suggestionsList {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .suggestionItem:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #7210d3;
+}
+
+[data-theme="light"] .suggestionItem.selected {
+    background: rgba(114, 16, 211, 0.1);
+    color: #7210d3;
+}
+
 /* ── Reduced motion ─────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
     .searchClear {

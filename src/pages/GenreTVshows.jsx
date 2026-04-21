@@ -38,7 +38,6 @@ export default function GenreTVshows() {
                 const res = await tmdbRequest("/discover/tv", {
                     with_genres: id,
                     sort_by: "popularity.desc",
-                    include_adult: false,
                     page,
                 });
                 setTvShows(res?.results || []);
