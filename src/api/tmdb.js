@@ -12,7 +12,8 @@ function getBearerToken() {
 export async function tmdbRequest(path, params = {}, options = {}) {
   if (!BASE_URL) throw new Error("VITE_TMDB_BASE_URL is not defined in .env");
 
-  const url = new URL(`${BASE_URL}${path}`);
+  const isRelative = BASE_URL.startsWith('/');
+  const url = new URL(`${BASE_URL}${path}`, isRelative ? window.location.origin : undefined);
 
   Object.entries(params).forEach(([k, v]) => {
     if (v === undefined || v === null || v === "") return;
